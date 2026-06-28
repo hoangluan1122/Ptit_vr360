@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>PTIT VR360</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div class="app">
+      <aside class="sidebar">
+        <h2>Danh muc dia diem</h2>
+        <div id="sceneList" class="scene-list"></div>
+      </aside>
+
+      <main class="stage">
+        <header class="topbar">
+          <button id="menuToggle" class="menu-button" type="button" aria-label="An hien menu" aria-expanded="true">☰</button>
+          <div class="brand">
+            <strong>PTIT Virtual Tour</strong>
+            <span>Hoc vien Cong nghe Buu chinh Vien thong</span>
+          </div>
+          <button id="helpButton" class="circle-button" type="button" aria-label="Thong tin">i</button>
+        </header>
+
+        <div id="pano"></div>
+        <div id="fallback" class="fallback">
+          <div>
+            <h1>PTIT VR360</h1>
+            <p>Khung du an da san sang. Them Krpano vao <code>vendor/krpano</code> va anh 360 vao <code>panos</code>.</p>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <dialog id="infoModal" class="modal">
+      <button id="modalClose" class="modal-close" type="button" aria-label="Dong">x</button>
+      <div id="modalImage" class="modal-image"></div>
+      <div class="modal-content">
+        <p id="modalType" class="modal-type">Thong tin</p>
+        <h2 id="modalTitle"></h2>
+        <p id="modalDescription"></p>
+      </div>
+    </dialog>
+
+    <script src="tour.js"></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>

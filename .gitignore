@@ -1,0 +1,23 @@
+# OS/editor files
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.swp
+*.swo
+
+# Logs and runtime output
+*.log
+logs/
+tmp/
+temp/
+
+# Dependencies/build artifacts that should not be committed
+node_modules/
+dist/
+build/
+.cache/
+
+# Environment/local config
+.env
+.env.*
+!.env.example
