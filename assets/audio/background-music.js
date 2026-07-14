@@ -52,7 +52,7 @@
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       cursor: pointer;
-      transition: background 160ms ease, transform 160ms ease, opacity 160ms ease;
+      transition: right 180ms ease, background 160ms ease, transform 160ms ease, opacity 160ms ease;
     }
     .music-toggle:hover { background: rgba(34,37,44,.9); }
     .music-toggle:active { transform: scale(.92); }
@@ -62,7 +62,11 @@
     .music-toggle.is-muted { opacity: .68; }
     .music-toggle.is-muted .sound-on { display: none; }
     .music-toggle.is-muted .sound-off { display: block; }
-    @media (max-width: 620px) { .music-toggle { top: 78px; right: 10px; width: 42px; height: 42px; } }
+    body:has(.place-directory.open) .music-toggle { right: 380px; }
+    @media (max-width: 620px) {
+      .music-toggle { top: 78px; right: 10px; width: 42px; height: 42px; }
+      body:has(.place-directory.open) .music-toggle { opacity: 0; visibility: hidden; pointer-events: none; }
+    }
   `;
   document.head.appendChild(style);
 
