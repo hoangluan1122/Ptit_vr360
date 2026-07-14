@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#111216" />
+    <title>PTIT FPT Virtual Tour</title>
+    <link rel="stylesheet" href="../../assets/tour-controls.css?v=2" />
+    <style>
+      :root { --red:#d71920; --glass:rgba(17,18,22,.76); font-family:Inter,"Segoe UI",Arial,sans-serif; }
+      * { box-sizing:border-box; }
+      html,body,#pano { width:100%; height:100%; margin:0; overflow:hidden; background:#111216; }
+      .topbar { position:fixed; z-index:20; top:18px; right:18px; left:18px; height:64px; display:flex; align-items:center; gap:12px; padding:8px 10px; border:1px solid rgba(255,255,255,.16); border-radius:17px; background:var(--glass); color:#fff; box-shadow:0 16px 44px rgba(0,0,0,.22); backdrop-filter:blur(18px); }
+      .map-back { display:inline-flex; align-items:center; gap:7px; height:42px; padding:0 12px; border-radius:10px; background:rgba(255,255,255,.09); color:rgba(255,255,255,.84); font-size:11px; font-weight:650; text-decoration:none; }
+      .map-back:hover { background:rgba(255,255,255,.15); }
+      .logo { display:grid; place-items:center; width:46px; height:46px; flex:0 0 auto; border-radius:12px; background:var(--red); font-size:12px; font-weight:800; }
+      .brand { min-width:0; }
+      .brand strong,.brand span { display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+      .brand strong { font-size:14px; }
+      .brand span { margin-top:3px; color:rgba(255,255,255,.58); font-size:11px; }
+      .scene-status { min-width:0; display:flex; align-items:center; gap:9px; margin-left:auto; padding:10px 13px; border-radius:11px; background:rgba(255,255,255,.09); color:rgba(255,255,255,.84); font-size:12px; }
+      .status-dot { width:7px; height:7px; border-radius:50%; background:#ff5961; box-shadow:0 0 0 4px rgba(255,89,97,.14); }
+      .loading { position:fixed; z-index:50; inset:0; display:grid; place-items:center; background:#111216; color:#fff; transition:opacity .5s,visibility .5s; }
+      .loading.done { opacity:0; visibility:hidden; pointer-events:none; }
+      .loading-mark { display:grid; place-items:center; width:58px; height:58px; border-radius:16px; background:var(--red); font-size:14px; font-weight:800; }
+      @media(max-width:620px){ .topbar{top:10px;right:10px;left:10px;height:58px}.logo{width:42px;height:42px}.brand span{display:none}.map-back span{display:none}.map-back{width:42px;padding:0;justify-content:center}.scene-status{max-width:125px;padding:9px 10px} }
+    </style>
+  </head>
+  <body>
+    <div id="pano"></div>
+    <div id="loading" class="loading"><div class="loading-mark">PTIT</div></div>
+    <header class="topbar">
+      <a class="map-back" href="../../index.html" aria-label="Quay lại bản đồ"><b>←</b><span>Bản đồ</span></a>
+      <div class="logo" aria-hidden="true">PTIT</div>
+      <div class="brand"><strong>FPT Virtual Tour</strong><span>Học viện Công nghệ Bưu chính Viễn thông</span></div>
+      <div class="scene-status"><span class="status-dot"></span><span id="sceneTitle">Phòng lab FPT</span></div>
+    </header>
+    <nav class="tour-tools" aria-label="Thanh công cụ tham quan">
+      <button class="tour-tool" data-tour-action="left" type="button" aria-label="Xoay trái">←</button>
+      <button class="tour-tool" data-tour-action="right" type="button" aria-label="Xoay phải">→</button>
+      <button class="tour-tool" data-tour-action="up" type="button" aria-label="Nhìn lên">↑</button>
+      <button class="tour-tool" data-tour-action="down" type="button" aria-label="Nhìn xuống">↓</button>
+      <span class="tour-tool-separator"></span>
+      <button class="tour-tool" data-tour-action="zoom-in" type="button" aria-label="Phóng to">+</button>
+      <button class="tour-tool" data-tour-action="zoom-out" type="button" aria-label="Thu nhỏ">−</button>
+      <span class="tour-tool-separator"></span>
+      <button class="tour-tool" data-tour-action="vr" type="button" aria-label="Chế độ VR"><svg viewBox="0 0 24 24"><path d="M3 8.5h18v8H16l-2.2-3h-3.6L8 16.5H3z"/><circle cx="7" cy="12" r="1"/><circle cx="17" cy="12" r="1"/></svg></button>
+      <button class="tour-tool" data-tour-action="fullscreen" type="button" aria-label="Toàn màn hình"><svg viewBox="0 0 24 24"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5"/></svg></button>
+    </nav>
+    <script src="tour.js"></script>
+    <script>
+      const names={scene_viettel2a_:"Hành lang",scene_fpt1:"Phòng FPT · Góc 1",scene_fpt2a:"Phòng FPT · Góc 2",scene_fpt3a:"Phòng FPT · Góc 3",scene_fpt4a:"Phòng FPT · Góc 4"};
+      let lastScene="";
+      embedpano({xml:"tour.xml",target:"pano",html5:"only",passQueryParameters:"startscene,startlookat",onready(instance){
+        window.ptitKrpano=instance;
+        instance.call("delayedcall(0.3, skin_hideskin(instant); set(layer[skin_btn_show].visible,false); );");
+        setInterval(()=>{const scene=instance.get("xml.scene")||"";if(scene&&scene!==lastScene){lastScene=scene;document.querySelector("#sceneTitle").textContent=names[scene]||"Phòng lab FPT";}},350);
+        setTimeout(()=>document.querySelector("#loading").classList.add("done"),800);
+      }});
+    </script>
+    <script src="../../assets/audio/background-music.js"></script>
+    <script src="../../assets/tour-controls.js?v=2"></script>
+  </body>
+</html>

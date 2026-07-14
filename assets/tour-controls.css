@@ -1,0 +1,39 @@
+.tour-tools {
+  position: fixed;
+  z-index: 1001;
+  left: 50%;
+  bottom: 18px;
+  display: flex;
+  gap: 3px;
+  padding: 6px;
+  border: 1px solid rgba(255,255,255,.16);
+  border-radius: 15px;
+  background: rgba(17,18,22,.78);
+  box-shadow: 0 14px 40px rgba(0,0,0,.28);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  transform: translateX(-50%);
+}
+.tour-tool {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  padding: 0;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: rgba(255,255,255,.9);
+  font: 500 21px/1 "Segoe UI", sans-serif;
+  cursor: pointer;
+  transition: background 150ms ease, transform 150ms ease;
+}
+.tour-tool:hover { background: rgba(255,255,255,.12); }
+.tour-tool:active { transform: scale(.9); }
+.tour-tool:focus-visible { outline: 2px solid #ff6a71; outline-offset: 2px; }
+.tour-tool svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.tour-tool-separator { width: 1px; margin: 7px 3px; background: rgba(255,255,255,.14); }
+@media (max-width: 620px) {
+  .tour-tools { bottom: 10px; max-width: calc(100vw - 20px); }
+  .tour-tool { width: 36px; height: 38px; font-size: 18px; }
+}

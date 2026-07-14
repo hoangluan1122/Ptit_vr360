@@ -2,10 +2,371 @@
 <html lang="vi">
   <head>
     <meta charset="utf-8" />
-    <meta http-equiv="refresh" content="0; url=tour.html" />
-    <title>PTIT VR360</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#f3f1ed" />
+    <title>PTIT Virtual Campus</title>
+    <style>
+      :root {
+        --red: #d71920;
+        --red-dark: #af1119;
+        --ink: #17191f;
+        --muted: #69717c;
+        --glass: rgba(255, 255, 255, 0.82);
+        font-family: Inter, "Segoe UI", Arial, sans-serif;
+      }
+
+      * { box-sizing: border-box; }
+      html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; }
+      body { color: var(--ink); background: #f3f1ed; }
+      button, a { font: inherit; }
+
+      .app { position: relative; width: 100vw; height: 100dvh; overflow: hidden; }
+      .map-viewport { position: absolute; inset: 0; display: grid; place-items: center; overflow: hidden; cursor: grab; touch-action: none; }
+      .map-viewport.dragging { cursor: grabbing; }
+      .map-canvas { position: relative; width: max(100vw, 177.73vh); aspect-ratio: 1365 / 768; flex: 0 0 auto; transform-origin: center; will-change: transform; }
+      .campus-image { display: block; width: 100%; height: 100%; object-fit: contain; user-select: none; pointer-events: none; }
+
+      .campus-npc { display: none; position: absolute; width: 96px; height: 96px; pointer-events: none; transform: translate(-50%, -78%); transform-origin: 50% 78%; will-change: left, top; }
+      .campus-npc::after { position: absolute; left: 50%; bottom: 14px; width: 28px; height: 9px; border-radius: 50%; background: rgba(24,36,45,.2); filter: blur(3px); content: ""; transform: translateX(-50%) scale(var(--npc-scale)); }
+      .npc-sprite { position: absolute; inset: 0; background-repeat: no-repeat; background-position: 0 -96px; transform: scale(var(--npc-scale)); transform-origin: 50% 78%; image-rendering: pixelated; }
+      .npc-sprite.mirrored { transform: scaleX(-1) scale(var(--npc-scale)); }
+
+      .topbar {
+        position: absolute;
+        z-index: 20;
+        top: 18px;
+        right: 18px;
+        left: 18px;
+        height: 64px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 8px 10px;
+        border: 1px solid rgba(255,255,255,.8);
+        border-radius: 17px;
+        background: var(--glass);
+        box-shadow: 0 16px 45px rgba(44, 50, 59, .12);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+      }
+
+      .logo { display: grid; place-items: center; width: 46px; height: 46px; flex: 0 0 auto; border-radius: 12px; background: var(--red); color: #fff; font-size: 12px; font-weight: 850; }
+      .brand { min-width: 0; }
+      .brand strong, .brand span { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+      .brand strong { font-size: 14px; letter-spacing: .01em; }
+      .brand span { margin-top: 3px; color: var(--muted); font-size: 11px; }
+      .tour-count { margin-left: auto; padding: 9px 12px; border-radius: 10px; background: rgba(23,25,31,.06); color: #59616c; font-size: 11px; }
+      .directory-toggle { min-height: 38px; padding: 0 12px; border: 1px solid rgba(23,25,31,.08); border-radius: 10px; background: rgba(23,25,31,.055); color: #343a43; font-size: 11px; font-weight: 700; cursor: pointer; }
+      .directory-toggle:hover { background: rgba(23,25,31,.09); }
+
+      .place-directory { position: absolute; z-index: 24; top: 96px; right: 18px; bottom: 18px; width: min(350px, calc(100vw - 36px)); display: flex; flex-direction: column; overflow: hidden; border: 1px solid rgba(255,255,255,.88); border-radius: 19px; background: rgba(250,250,250,.93); box-shadow: 0 24px 70px rgba(35,42,51,.22); backdrop-filter: blur(22px); -webkit-backdrop-filter: blur(22px); opacity: 0; visibility: hidden; transform: translateX(20px); transition: opacity 180ms ease, visibility 180ms ease, transform 180ms ease; }
+      .place-directory.open { opacity: 1; visibility: visible; transform: translateX(0); }
+      .directory-head { display: flex; align-items: center; gap: 10px; padding: 17px 17px 13px; border-bottom: 1px solid rgba(23,25,31,.07); }
+      .directory-head div { min-width: 0; }
+      .directory-head strong,.directory-head span { display: block; }
+      .directory-head strong { font-size: 14px; }
+      .directory-head span { margin-top: 3px; color: var(--muted); font-size: 10px; }
+      .directory-close { display: grid; place-items: center; width: 34px; height: 34px; margin-left: auto; padding: 0; border: 0; border-radius: 9px; background: rgba(23,25,31,.06); color: #525a65; font-size: 18px; cursor: pointer; }
+      .directory-search-wrap { position: relative; margin: 13px 14px 7px; }
+      .directory-search-wrap::before { position: absolute; top: 50%; left: 13px; width: 12px; height: 12px; border: 1.5px solid #8a929d; border-radius: 50%; content: ""; transform: translateY(-58%); }
+      .directory-search-wrap::after { position: absolute; top: 55%; left: 24px; width: 6px; height: 1.5px; background: #8a929d; content: ""; transform: rotate(45deg); }
+      .directory-search { width: 100%; height: 42px; padding: 0 13px 0 39px; border: 1px solid #e2e4e7; border-radius: 11px; outline: 0; background: #fff; color: #252a31; font: inherit; font-size: 12px; }
+      .directory-search:focus { border-color: rgba(215,25,32,.45); box-shadow: 0 0 0 3px rgba(215,25,32,.08); }
+      .directory-list { flex: 1; overflow: auto; padding: 5px 10px 15px; scrollbar-width: thin; }
+      .directory-group { padding: 9px 4px 4px; }
+      .directory-group-title { display: flex; align-items: center; gap: 8px; margin: 0 5px 7px; color: #777f8a; font-size: 9px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+      .directory-group-title::after { height: 1px; flex: 1; background: #e4e5e8; content: ""; }
+      .directory-item { display: flex; align-items: center; gap: 11px; min-height: 55px; padding: 7px; border-radius: 12px; color: inherit; text-decoration: none; transition: background 140ms ease, transform 140ms ease; }
+      .directory-item:hover { background: #fff; transform: translateX(2px); }
+      .directory-thumb { width: 56px; height: 40px; flex: 0 0 auto; border-radius: 8px; background: #e6e8eb center/cover no-repeat; box-shadow: inset 0 0 0 1px rgba(23,25,31,.06); }
+      .directory-copy { min-width: 0; }
+      .directory-copy strong,.directory-copy span { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+      .directory-copy strong { font-size: 11px; }
+      .directory-copy span { margin-top: 4px; color: #858d98; font-size: 9px; }
+      .directory-arrow { margin-left: auto; color: #a1a7af; font-size: 15px; }
+      .directory-empty { display: none; padding: 34px 15px; color: #858d98; font-size: 11px; text-align: center; }
+
+      .hotspot {
+        position: absolute;
+        z-index: 10;
+        left: 34.5%;
+        top: 56.5%;
+        width: 48px;
+        height: 48px;
+        padding: 0;
+        border: 0;
+        border-radius: 50%;
+        background: transparent;
+        cursor: pointer;
+        transform: translate(-50%, -50%);
+      }
+
+      #fptHotspot { left: 55%; top: 42.5%; }
+
+      .hotspot-ring, .hotspot-core { position: absolute; inset: 0; border-radius: 50%; }
+      .hotspot-ring { background: rgba(215,25,32,.2); animation: pulse 2s ease-out infinite; }
+      .hotspot-core { inset: 8px; display: grid; place-items: center; border: 3px solid #fff; background: var(--red); box-shadow: 0 8px 22px rgba(139,16,23,.34); }
+      .hotspot-core::before { width: 8px; height: 8px; border-radius: 50%; background: #fff; content: ""; }
+      .hotspot-label { position: absolute; left: 50%; bottom: calc(100% + 8px); padding: 8px 10px; border-radius: 9px; background: rgba(19,21,26,.88); color: #fff; font-size: 11px; font-weight: 650; white-space: nowrap; box-shadow: 0 8px 24px rgba(0,0,0,.18); transform: translateX(-50%); transition: transform 160ms ease, background 160ms ease; }
+      .hotspot:hover .hotspot-label, .hotspot:focus-visible .hotspot-label { background: #17191f; transform: translateX(-50%) translateY(-3px); }
+      .hotspot:focus-visible { outline: 3px solid rgba(215,25,32,.3); outline-offset: 4px; }
+
+      .intro {
+        position: absolute;
+        z-index: 18;
+        left: 18px;
+        bottom: 18px;
+        max-width: 330px;
+        padding: 16px 18px;
+        border: 1px solid rgba(255,255,255,.84);
+        border-radius: 15px;
+        background: var(--glass);
+        box-shadow: 0 12px 36px rgba(44,50,59,.1);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+      }
+      .intro p { margin: 0; color: var(--muted); font-size: 11px; line-height: 1.55; }
+      .intro strong { color: var(--ink); }
+
+      .zoom-controls { position: absolute; z-index: 18; right: 18px; bottom: 18px; display: flex; gap: 4px; padding: 5px; border: 1px solid rgba(255,255,255,.84); border-radius: 13px; background: var(--glass); box-shadow: 0 12px 34px rgba(44,50,59,.1); backdrop-filter: blur(18px); }
+      .zoom-controls button { display: grid; place-items: center; width: 40px; height: 40px; padding: 0; border: 0; border-radius: 9px; background: transparent; color: #333943; font-size: 20px; cursor: pointer; transition: background 150ms ease, transform 150ms ease; }
+      .zoom-controls button:hover { background: rgba(23,25,31,.07); }
+      .zoom-controls button:active { transform: scale(.93); }
+
+      .backdrop { position: absolute; z-index: 30; inset: 0; display: none; place-items: center; padding: 20px; background: rgba(15,17,21,.48); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+      .backdrop.open { display: grid; }
+      .place-card { position: relative; width: min(430px, 100%); overflow: hidden; border: 1px solid rgba(255,255,255,.75); border-radius: 22px; background: #fff; box-shadow: 0 28px 80px rgba(0,0,0,.28); }
+      .place-image { height: 190px; background: url("labs/cie/panos/Cie_cuaTruoc.tiles/preview.jpg") center / cover; }
+      .place-image.fpt { background-image: url("labs/fpt/panos/fpt1.tiles/preview.jpg"); }
+      .place-content { padding: 26px; }
+      .kicker { margin: 0 0 7px; color: var(--red); font-size: 10px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
+      .place-card h1 { margin: 0 0 10px; font-size: 27px; letter-spacing: -.045em; }
+      .place-card p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.65; }
+      .meta { display: flex; gap: 8px; margin-top: 18px; }
+      .meta span { padding: 7px 9px; border-radius: 8px; background: #f3f3f4; color: #626a75; font-size: 10px; }
+      .actions { display: flex; gap: 9px; margin-top: 23px; }
+      .primary, .secondary { min-height: 44px; display: inline-flex; align-items: center; justify-content: center; padding: 0 16px; border-radius: 10px; text-decoration: none; font-size: 12px; font-weight: 700; cursor: pointer; }
+      .primary { flex: 1; border: 0; background: var(--red); color: #fff; box-shadow: 0 9px 22px rgba(215,25,32,.22); }
+      .primary:hover { background: var(--red-dark); }
+      .secondary { border: 1px solid #e4e5e8; background: #fff; color: #555d68; }
+      .secondary:hover { background: #f5f5f6; }
+
+      @keyframes pulse { 0% { transform: scale(.45); opacity: .9; } 80%,100% { transform: scale(1.55); opacity: 0; } }
+
+      @media (max-width: 640px) {
+        .topbar { top: 10px; right: 10px; left: 10px; height: 58px; border-radius: 14px; }
+        .logo { width: 42px; height: 42px; border-radius: 10px; }
+        .brand span { display: none; }
+        .intro { right: 10px; bottom: 10px; left: 10px; max-width: none; padding: 12px 14px; }
+        .zoom-controls { right: 10px; bottom: 82px; }
+        .tour-count { padding: 8px 9px; }
+        .directory-toggle { width: 38px; padding: 0; font-size: 0; }
+        .directory-toggle::before { content: "⌕"; font-size: 18px; }
+        .place-directory { top: 78px; right: 10px; bottom: 10px; width: calc(100vw - 20px); }
+        .place-image { height: 160px; }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+      }
+    </style>
   </head>
   <body>
-    <a href="tour.html">Mo PTIT VR360</a>
+    <main class="app">
+      <div id="mapViewport" class="map-viewport">
+        <div id="mapCanvas" class="map-canvas">
+          <img class="campus-image" src="assets/campus-map-surroundings.png" alt="Bản đồ khuôn viên Học viện Công nghệ Bưu chính Viễn thông và khu vực xung quanh" draggable="false" />
+          <div id="campusNpc01" class="campus-npc" data-npc="npc-01" aria-hidden="true"><span class="npc-sprite"></span></div>
+          <div class="campus-npc" data-npc="npc-02" data-speed="0.88" data-segment="2" data-progress="0.4" aria-hidden="true"><span class="npc-sprite"></span></div>
+          <div class="campus-npc" data-npc="npc-03" data-speed="1.08" data-segment="4" data-progress="0.2" aria-hidden="true"><span class="npc-sprite"></span></div>
+          <div class="campus-npc" data-npc="npc-04" data-speed="0.94" data-segment="1" data-progress="0.7" aria-hidden="true"><span class="npc-sprite"></span></div>
+          <div class="campus-npc" data-npc="npc-05" data-directions="left,down,downleft,up" data-speed="1.02" data-segment="3" data-progress="0.3" aria-hidden="true"><span class="npc-sprite"></span></div>
+          <button id="cieHotspot" class="hotspot" type="button" aria-label="Mở thông tin Trung tâm CIE">
+            <span class="hotspot-ring"></span>
+            <span class="hotspot-core"></span>
+            <span class="hotspot-label">Trung tâm CIE</span>
+          </button>
+          <button id="fptHotspot" class="hotspot" type="button" aria-label="Mở thông tin phòng lab FPT">
+            <span class="hotspot-ring"></span>
+            <span class="hotspot-core"></span>
+            <span class="hotspot-label">Phòng lab FPT</span>
+          </button>
+        </div>
+      </div>
+
+      <header class="topbar">
+        <div class="logo" aria-hidden="true">PTIT</div>
+        <div class="brand">
+          <strong>Virtual Campus</strong>
+          <span>Khám phá không gian học tập tại PTIT</span>
+        </div>
+        <button id="directoryToggle" class="directory-toggle" type="button" aria-expanded="false" aria-controls="placeDirectory">Địa điểm</button>
+        <span class="tour-count">02 địa điểm</span>
+      </header>
+
+      <aside id="placeDirectory" class="place-directory" aria-label="Danh sách địa điểm" aria-hidden="true">
+        <div class="directory-head">
+          <div><strong>Danh sách địa điểm</strong><span>Đi thẳng tới không gian cần xem</span></div>
+          <button id="directoryClose" class="directory-close" type="button" aria-label="Đóng">×</button>
+        </div>
+        <div class="directory-search-wrap"><input id="directorySearch" class="directory-search" type="search" placeholder="Tìm tòa nhà, phòng, lab…" autocomplete="off" /></div>
+        <div id="directoryList" class="directory-list">
+          <section class="directory-group" data-directory-group>
+            <h2 class="directory-group-title">Trung tâm CIE</h2>
+            <a class="directory-item" data-directory-item data-search="cie cửa trước lối vào" href="labs/cie/tour.html?startscene=scene_cie_cuatruoc"><span class="directory-thumb" style="background-image:url('labs/cie/panos/Cie_cuaTruoc.tiles/thumb.jpg')"></span><span class="directory-copy"><strong>Cửa trước CIE</strong><span>Lối vào trung tâm</span></span><span class="directory-arrow">›</span></a>
+            <a class="directory-item" data-directory-item data-search="cie sảnh chính sảnh 1" href="labs/cie/tour.html?startscene=scene_cie_sanh1"><span class="directory-thumb" style="background-image:url('labs/cie/panos/Cie_sanh1.tiles/thumb.jpg')"></span><span class="directory-copy"><strong>Sảnh chính CIE</strong><span>Khu vực tiếp đón</span></span><span class="directory-arrow">›</span></a>
+            <a class="directory-item" data-directory-item data-search="cie hành lang tầng 5" href="labs/cie/tour.html?startscene=scene_cie_hl1"><span class="directory-thumb" style="background-image:url('labs/cie/panos/Cie_hl1.tiles/thumb.jpg')"></span><span class="directory-copy"><strong>Hành lang tầng 5</strong><span>Khu phòng chức năng</span></span><span class="directory-arrow">›</span></a>
+          </section>
+          <section class="directory-group" data-directory-group>
+            <h2 class="directory-group-title">Phòng CIE · Tầng 5</h2>
+            <a class="directory-item" data-directory-item data-search="phòng 501 cie" href="labs/cie/tour.html?startscene=scene_cie_p501"><span class="directory-thumb" style="background-image:url('labs/cie/panos/Cie_p501.tiles/thumb.jpg')"></span><span class="directory-copy"><strong>Phòng 501</strong><span>Trung tâm CIE</span></span><span class="directory-arrow">›</span></a>
+            <a class="directory-item" data-directory-item data-search="phòng 502 cie" href="labs/cie/tour.html?startscene=scene_cie_p502_a"><span class="directory-thumb" style="background-image:url('labs/cie/panos/Cie_p502_a.tiles/thumb.jpg')"></span><span class="directory-copy"><strong>Phòng 502</strong><span>Trung tâm CIE</span></span><span class="directory-arrow">›</span></a>
+            <a class="directory-item" data-directory-item data-search="phòng 503 cie" href="labs/cie/tour.html?startscene=scene_cie_p503_a"><span class="directory-thumb" style="background-image:url('labs/cie/panos/Cie_p503_a.tiles/thumb.jpg')"></span><span class="directory-copy"><strong>Phòng 503</strong><span>Trung tâm CIE</span></span><span class="directory-arrow">›</span></a>
+            <a class="directory-item" data-directory-item data-search="phòng 504 cie" href="labs/cie/tour.html?startscene=scene_cie_p504_a"><span class="directory-thumb" style="background-image:url('labs/cie/panos/Cie_p504_a.tiles/thumb.jpg')"></span><span class="directory-copy"><strong>Phòng 504</strong><span>Trung tâm CIE</span></span><span class="directory-arrow">›</span></a>
+            <a class="directory-item" data-directory-item data-search="phòng 505 cie" href="labs/cie/tour.html?startscene=scene_cie_p505_a"><span class="directory-thumb" style="background-image:url('labs/cie/panos/Cie_p505_a.tiles/thumb.jpg')"></span><span class="directory-copy"><strong>Phòng 505</strong><span>Trung tâm CIE</span></span><span class="directory-arrow">›</span></a>
+            <a class="directory-item" data-directory-item data-search="phòng 506 cie" href="labs/cie/tour.html?startscene=scene_cie_p506_a"><span class="directory-thumb" style="background-image:url('labs/cie/panos/Cie_p506_a.tiles/thumb.jpg')"></span><span class="directory-copy"><strong>Phòng 506</strong><span>Trung tâm CIE</span></span><span class="directory-arrow">›</span></a>
+          </section>
+          <section class="directory-group" data-directory-group>
+            <h2 class="directory-group-title">Phòng lab FPT</h2>
+            <a class="directory-item" data-directory-item data-search="fpt hành lang cửa vào" href="labs/fpt/tour.html?startscene=scene_viettel2a_"><span class="directory-thumb" style="background-image:url('labs/fpt/panos/viettel2a_.tiles/thumb.jpg')"></span><span class="directory-copy"><strong>Hành lang trước lab</strong><span>Lối vào phòng FPT</span></span><span class="directory-arrow">›</span></a>
+            <a class="directory-item" data-directory-item data-search="fpt phòng lab góc 1" href="labs/fpt/tour.html?startscene=scene_fpt1"><span class="directory-thumb" style="background-image:url('labs/fpt/panos/fpt1.tiles/thumb.jpg')"></span><span class="directory-copy"><strong>Phòng lab FPT</strong><span>Góc quan sát 1</span></span><span class="directory-arrow">›</span></a>
+            <a class="directory-item" data-directory-item data-search="fpt phòng lab góc 2" href="labs/fpt/tour.html?startscene=scene_fpt2a"><span class="directory-thumb" style="background-image:url('labs/fpt/panos/fpt2a.tiles/thumb.jpg')"></span><span class="directory-copy"><strong>Phòng lab FPT</strong><span>Góc quan sát 2</span></span><span class="directory-arrow">›</span></a>
+          </section>
+          <p id="directoryEmpty" class="directory-empty">Không tìm thấy địa điểm phù hợp.</p>
+        </div>
+      </aside>
+
+      <section class="intro">
+        <p><strong>Chọn một địa điểm trên bản đồ.</strong><br />Kéo để di chuyển, cuộn để phóng to và bấm điểm địa điểm để tham quan 360.</p>
+      </section>
+
+      <div id="placeBackdrop" class="backdrop" role="dialog" aria-modal="true" aria-labelledby="placeTitle">
+        <article class="place-card">
+          <div class="place-image"></div>
+          <div class="place-content">
+            <p class="kicker">PTIT Virtual Tour</p>
+            <h1 id="placeTitle">Trung tâm CIE</h1>
+            <p>Khám phá không gian làm việc, hành lang và các phòng chức năng của Trung tâm CIE qua ảnh toàn cảnh 360°.</p>
+            <div class="meta"><span>26 điểm xem</span><span>61 hotspot</span></div>
+            <div class="actions">
+              <button id="closeCard" class="secondary" type="button">Đóng</button>
+              <a class="primary" href="labs/cie/tour.html">Bắt đầu tham quan</a>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <div id="fptBackdrop" class="backdrop" role="dialog" aria-modal="true" aria-labelledby="fptPlaceTitle">
+        <article class="place-card">
+          <div class="place-image fpt"></div>
+          <div class="place-content">
+            <p class="kicker">PTIT Virtual Tour</p>
+            <h1 id="fptPlaceTitle">Phòng lab FPT</h1>
+            <p>Khám phá phòng thực hành FPT qua ảnh toàn cảnh 360° và di chuyển liền mạch giữa các góc quan sát.</p>
+            <div class="meta"><span>5 điểm xem</span><span>10 hotspot</span></div>
+            <div class="actions">
+              <button id="closeFptCard" class="secondary" type="button">Đóng</button>
+              <a class="primary" href="labs/fpt/tour.html">Bắt đầu tham quan</a>
+            </div>
+          </div>
+        </article>
+      </div>
+    </main>
+
+    <script>
+      const viewport = document.querySelector("#mapViewport");
+      const canvas = document.querySelector("#mapCanvas");
+      const backdrop = document.querySelector("#placeBackdrop");
+      const fptBackdrop = document.querySelector("#fptBackdrop");
+      const directory = document.querySelector("#placeDirectory");
+      const directoryToggle = document.querySelector("#directoryToggle");
+      const directorySearch = document.querySelector("#directorySearch");
+
+      function setDirectory(open) {
+        directory.classList.toggle("open", open);
+        directory.setAttribute("aria-hidden", String(!open));
+        directoryToggle.setAttribute("aria-expanded", String(open));
+        if (open) setTimeout(() => directorySearch.focus(), 180);
+      }
+
+      directoryToggle.addEventListener("click", () => setDirectory(!directory.classList.contains("open")));
+      document.querySelector("#directoryClose").addEventListener("click", () => setDirectory(false));
+      directorySearch.addEventListener("input", () => {
+        const query = directorySearch.value.trim().toLocaleLowerCase("vi");
+        let visibleCount = 0;
+        document.querySelectorAll("[data-directory-item]").forEach(item => {
+          const visible = !query || item.dataset.search.toLocaleLowerCase("vi").includes(query) || item.textContent.toLocaleLowerCase("vi").includes(query);
+          item.hidden = !visible;
+          if (visible) visibleCount += 1;
+        });
+        document.querySelectorAll("[data-directory-group]").forEach(group => {
+          group.hidden = !group.querySelector("[data-directory-item]:not([hidden])");
+        });
+        document.querySelector("#directoryEmpty").style.display = visibleCount ? "none" : "block";
+      });
+      let scale = 1.18;
+      let x = 0;
+      let y = 0;
+      let dragging = false;
+      let startX = 0;
+      let startY = 0;
+
+      function clampPosition() {
+        const maxX = Math.max(0, (canvas.offsetWidth * scale - viewport.clientWidth) / (2 * scale));
+        const maxY = Math.max(0, (canvas.offsetHeight * scale - viewport.clientHeight) / (2 * scale));
+        x = Math.max(-maxX, Math.min(maxX, x));
+        y = Math.max(-maxY, Math.min(maxY, y));
+      }
+
+      function renderMap() {
+        clampPosition();
+        canvas.style.transform = `translate3d(${x}px, ${y}px, 0) scale(${scale})`;
+      }
+
+      function setScale(nextScale) {
+        scale = Math.min(2.2, Math.max(1.05, nextScale));
+        renderMap();
+      }
+
+      viewport.addEventListener("wheel", (event) => {
+        event.preventDefault();
+        setScale(scale + (event.deltaY < 0 ? .12 : -.12));
+      }, { passive: false });
+
+      viewport.addEventListener("pointerdown", (event) => {
+        if (event.target.closest(".hotspot")) return;
+        dragging = true;
+        startX = event.clientX - x;
+        startY = event.clientY - y;
+        viewport.classList.add("dragging");
+        viewport.setPointerCapture(event.pointerId);
+      });
+      viewport.addEventListener("pointermove", (event) => {
+        if (!dragging) return;
+        x = event.clientX - startX;
+        y = event.clientY - startY;
+        renderMap();
+      });
+      viewport.addEventListener("pointerup", () => { dragging = false; viewport.classList.remove("dragging"); });
+      viewport.addEventListener("pointercancel", () => { dragging = false; viewport.classList.remove("dragging"); });
+      window.addEventListener("resize", renderMap);
+      renderMap();
+
+      document.querySelector("#cieHotspot").addEventListener("click", () => backdrop.classList.add("open"));
+      document.querySelector("#fptHotspot").addEventListener("click", () => fptBackdrop.classList.add("open"));
+      document.querySelector("#closeCard").addEventListener("click", () => backdrop.classList.remove("open"));
+      document.querySelector("#closeFptCard").addEventListener("click", () => fptBackdrop.classList.remove("open"));
+      backdrop.addEventListener("click", (event) => { if (event.target === backdrop) backdrop.classList.remove("open"); });
+      fptBackdrop.addEventListener("click", (event) => { if (event.target === fptBackdrop) fptBackdrop.classList.remove("open"); });
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") {
+          setDirectory(false);
+          backdrop.classList.remove("open");
+          fptBackdrop.classList.remove("open");
+        }
+      });
+    </script>
+    <script src="assets/simulation/map-simulation.js"></script>
+    <script src="assets/audio/background-music.js"></script>
   </body>
 </html>

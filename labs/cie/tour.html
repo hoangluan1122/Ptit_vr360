@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#111216" />
+    <title>PTIT CIE Virtual Tour</title>
+    <link rel="stylesheet" href="../../assets/tour-controls.css?v=2" />
+    <style>
+      :root {
+        --red: #d71920;
+        --dark: #111216;
+        --glass: rgba(17, 18, 22, 0.76);
+        --line: rgba(255, 255, 255, 0.16);
+        font-family: Inter, "Segoe UI", Arial, sans-serif;
+      }
+
+      * { box-sizing: border-box; }
+
+      html,
+      body,
+      #pano {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        overflow: hidden;
+        background: var(--dark);
+      }
+
+      button { font: inherit; }
+
+      .map-back {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        height: 42px;
+        padding: 0 12px;
+        border-radius: 10px;
+        color: rgba(255, 255, 255, 0.82);
+        background: rgba(255, 255, 255, 0.09);
+        font-size: 11px;
+        font-weight: 650;
+        text-decoration: none;
+        transition: background 160ms ease;
+      }
+      .map-back:hover { background: rgba(255, 255, 255, 0.15); }
+
+      .topbar {
+        position: fixed;
+        z-index: 20;
+        top: 18px;
+        right: 18px;
+        left: 18px;
+        height: 64px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 8px 10px;
+        border: 1px solid var(--line);
+        border-radius: 17px;
+        background: var(--glass);
+        color: #fff;
+        box-shadow: 0 16px 44px rgba(0, 0, 0, 0.22);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+      }
+
+      .logo {
+        display: grid;
+        place-items: center;
+        width: 46px;
+        height: 46px;
+        flex: 0 0 auto;
+        border-radius: 12px;
+        background: var(--red);
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+      }
+
+      .brand { min-width: 0; }
+      .brand strong,
+      .brand span { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+      .brand strong { font-size: 14px; font-weight: 700; letter-spacing: 0.01em; }
+      .brand span { margin-top: 3px; color: rgba(255, 255, 255, 0.58); font-size: 11px; }
+
+      .scene-status {
+        min-width: 0;
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        margin-left: auto;
+        padding: 10px 13px;
+        border-radius: 11px;
+        background: rgba(255, 255, 255, 0.09);
+        color: rgba(255, 255, 255, 0.84);
+        font-size: 12px;
+      }
+
+      .scene-status span:last-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+      .status-dot { width: 7px; height: 7px; flex: 0 0 auto; border-radius: 50%; background: #ff5961; box-shadow: 0 0 0 4px rgba(255, 89, 97, 0.14); }
+
+      .controls {
+        position: fixed;
+        z-index: 20;
+        right: 18px;
+        bottom: 18px;
+        display: flex;
+        gap: 4px;
+        padding: 6px;
+        border: 1px solid var(--line);
+        border-radius: 15px;
+        background: var(--glass);
+        box-shadow: 0 12px 36px rgba(0, 0, 0, 0.24);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+      }
+
+      .control-button {
+        position: relative;
+        display: grid;
+        place-items: center;
+        width: 42px;
+        height: 42px;
+        padding: 0;
+        border: 0;
+        border-radius: 10px;
+        background: transparent;
+        color: #fff;
+        cursor: pointer;
+        transition: background 160ms ease, transform 160ms ease;
+      }
+
+      .control-button:hover { background: rgba(255, 255, 255, 0.12); }
+      .control-button:active { transform: scale(0.93); }
+      .control-button:focus-visible { outline: 2px solid #ff7379; outline-offset: 2px; }
+      .reset-icon { font-size: 22px; font-weight: 300; line-height: 1; transform: translateY(-1px); }
+      .info-icon { font-size: 16px; font-weight: 700; }
+
+      .fullscreen-icon { position: relative; width: 17px; height: 17px; }
+      .fullscreen-icon::before,
+      .fullscreen-icon::after {
+        position: absolute;
+        inset: 0;
+        content: "";
+        border: solid currentColor;
+      }
+      .fullscreen-icon::before { border-width: 1.5px 0 0 1.5px; clip-path: polygon(0 0, 48% 0, 48% 12%, 12% 12%, 12% 48%, 0 48%); }
+      .fullscreen-icon::after { border-width: 0 1.5px 1.5px 0; clip-path: polygon(52% 88%, 88% 88%, 88% 52%, 100% 52%, 100% 100%, 52% 100%); }
+
+      .hint {
+        position: fixed;
+        z-index: 20;
+        bottom: 23px;
+        left: 18px;
+        padding: 10px 13px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 11px;
+        background: rgba(17, 18, 22, 0.58);
+        color: rgba(255, 255, 255, 0.68);
+        font-size: 11px;
+        letter-spacing: 0.02em;
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        transition: opacity 400ms ease;
+      }
+
+      .loading {
+        position: fixed;
+        z-index: 50;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        background: #111216;
+        color: #fff;
+        transition: opacity 500ms ease, visibility 500ms ease;
+      }
+      .loading.done { opacity: 0; visibility: hidden; pointer-events: none; }
+      .loading-inner { width: min(280px, calc(100vw - 48px)); text-align: center; }
+      .loading-mark { display: grid; place-items: center; width: 58px; height: 58px; margin: 0 auto 22px; border-radius: 16px; background: var(--red); font-size: 14px; font-weight: 800; }
+      .loading-title { margin: 0 0 18px; font-size: 13px; font-weight: 600; letter-spacing: 0.04em; }
+      .loading-track { height: 2px; overflow: hidden; border-radius: 2px; background: rgba(255, 255, 255, 0.12); }
+      .loading-bar { width: 38%; height: 100%; background: #ff5a62; animation: loading 1.2s ease-in-out infinite; }
+
+      .modal {
+        position: fixed;
+        z-index: 40;
+        inset: 0;
+        display: none;
+        place-items: center;
+        padding: 20px;
+        background: rgba(7, 8, 10, 0.62);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+      }
+      .modal.open { display: grid; }
+      .modal-card { position: relative; width: min(440px, 100%); overflow: hidden; padding: 32px; border: 1px solid rgba(255, 255, 255, 0.7); border-radius: 22px; background: #fff; color: #17191f; box-shadow: 0 28px 80px rgba(0, 0, 0, 0.34); }
+      .modal-image { display: block; width: calc(100% + 64px); height: 210px; margin: -32px -32px 25px; object-fit: cover; object-position: center; }
+      .modal-image[hidden] { display: none; }
+      .modal-kicker { margin: 0 0 8px; color: var(--red); font-size: 10px; font-weight: 800; letter-spacing: 0.13em; text-transform: uppercase; }
+      .modal-card h1 { margin: 0 0 12px; font-size: 26px; letter-spacing: -0.04em; }
+      .modal-card p { margin: 0; color: #68707d; font-size: 14px; line-height: 1.65; }
+      .narration-badge { display: none; align-items: center; gap: 8px; margin-top: 18px; color: #9e141b; font-size: 11px; font-weight: 700; }
+      .narration-badge.visible { display: flex; }
+      .narration-wave { display: flex; align-items: center; gap: 2px; height: 14px; }
+      .narration-wave i { width: 2px; height: 6px; border-radius: 2px; background: #d71920; animation: audio-wave .8s ease-in-out infinite alternate; }
+      .narration-wave i:nth-child(2) { height: 12px; animation-delay: -.35s; }
+      .narration-wave i:nth-child(3) { height: 9px; animation-delay: -.18s; }
+      .modal-close { position: absolute; z-index: 2; top: 12px; right: 12px; background: rgba(255,255,255,.88); color: #17191f; backdrop-filter: blur(10px); }
+
+      @keyframes loading {
+        0% { transform: translateX(-120%); }
+        50% { transform: translateX(95%); }
+        100% { transform: translateX(260%); }
+      }
+      @keyframes audio-wave { from { transform: scaleY(.45); opacity: .55; } to { transform: scaleY(1); opacity: 1; } }
+
+      @media (max-width: 620px) {
+        .topbar { top: 10px; right: 10px; left: 10px; height: 58px; border-radius: 14px; }
+        .logo { width: 42px; height: 42px; border-radius: 10px; }
+        .brand span { display: none; }
+        .scene-status { max-width: 130px; padding: 9px 10px; }
+        .map-back span { display: none; }
+        .map-back { width: 42px; padding: 0; justify-content: center; font-size: 18px; }
+        .controls { right: 10px; bottom: 10px; }
+        .hint { bottom: 15px; left: 10px; max-width: calc(100vw - 210px); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="pano"></div>
+
+    <div id="loading" class="loading" aria-live="polite">
+      <div class="loading-inner">
+        <div class="loading-mark">PTIT</div>
+        <p class="loading-title">Đang mở không gian CIE</p>
+        <div class="loading-track"><div class="loading-bar"></div></div>
+      </div>
+    </div>
+
+    <header class="topbar">
+      <a class="map-back" href="../../index.html" aria-label="Quay lại bản đồ"><b aria-hidden="true">←</b><span>Bản đồ</span></a>
+      <div class="logo" aria-hidden="true">PTIT</div>
+      <div class="brand">
+        <strong>CIE Virtual Tour</strong>
+        <span>Học viện Công nghệ Bưu chính Viễn thông</span>
+      </div>
+      <div class="scene-status" aria-live="polite">
+        <span class="status-dot"></span>
+        <span id="sceneTitle">Cửa trước</span>
+      </div>
+    </header>
+
+    <div id="hint" class="hint">Kéo để nhìn xung quanh · Chạm hotspot để di chuyển</div>
+
+    <nav class="controls" aria-label="Điều khiển góc nhìn">
+      <button id="resetView" class="control-button" type="button" aria-label="Đặt lại góc nhìn" title="Đặt lại góc nhìn"><span class="reset-icon">↺</span></button>
+      <button id="openInfo" class="control-button" type="button" aria-label="Thông tin" title="Thông tin"><span class="info-icon">i</span></button>
+    </nav>
+
+    <nav class="tour-tools" aria-label="Thanh công cụ tham quan">
+      <button class="tour-tool" data-tour-action="left" type="button" aria-label="Xoay trái">←</button>
+      <button class="tour-tool" data-tour-action="right" type="button" aria-label="Xoay phải">→</button>
+      <button class="tour-tool" data-tour-action="up" type="button" aria-label="Nhìn lên">↑</button>
+      <button class="tour-tool" data-tour-action="down" type="button" aria-label="Nhìn xuống">↓</button>
+      <span class="tour-tool-separator"></span>
+      <button class="tour-tool" data-tour-action="zoom-in" type="button" aria-label="Phóng to">+</button>
+      <button class="tour-tool" data-tour-action="zoom-out" type="button" aria-label="Thu nhỏ">−</button>
+      <span class="tour-tool-separator"></span>
+      <button class="tour-tool" data-tour-action="vr" type="button" aria-label="Chế độ VR"><svg viewBox="0 0 24 24"><path d="M3 8.5h18v8H16l-2.2-3h-3.6L8 16.5H3z"/><circle cx="7" cy="12" r="1"/><circle cx="17" cy="12" r="1"/></svg></button>
+      <button class="tour-tool" data-tour-action="fullscreen" type="button" aria-label="Toàn màn hình"><svg viewBox="0 0 24 24"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5"/></svg></button>
+    </nav>
+
+    <div id="infoModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="infoTitle">
+      <section class="modal-card">
+        <button id="closeInfo" class="control-button modal-close" type="button" aria-label="Đóng">×</button>
+        <img id="infoImage" class="modal-image" src="assets/student-management.jpg" alt="Cán bộ trao đổi công việc tại Bộ phận Quản lý lưu học sinh" hidden />
+        <p class="modal-kicker">PTIT Virtual Tour</p>
+        <h1 id="infoTitle">Trung tâm CIE</h1>
+        <p>Di chuyển giữa các khu vực bằng hotspot ngay trong ảnh 360. Kéo để xoay góc nhìn, cuộn hoặc chụm hai ngón để phóng to.</p>
+        <div id="narrationBadge" class="narration-badge"><span class="narration-wave"><i></i><i></i><i></i></span>Đang phát thuyết minh</div>
+      </section>
+    </div>
+
+    <script src="tour.js"></script>
+    <script>
+      const sceneNames = {
+        scene_cie_cuatruoc: "Cửa trước",
+        scene_cie_cuasau: "Cửa sau",
+        scene_cie_sanhsau: "Sảnh sau",
+        scene_cie_p501: "Phòng 501"
+      };
+      let krpano = null;
+      let lastScene = "";
+      const studentNarration = new Audio("audio/student-management.mp3");
+      studentNarration.preload = "auto";
+
+      function stopStudentNarration() {
+        if (!studentNarration.paused) studentNarration.pause();
+        studentNarration.currentTime = 0;
+        window.dispatchEvent(new CustomEvent("ptit:narrationend"));
+        document.querySelector("#narrationBadge").classList.remove("visible");
+      }
+
+      function formatSceneName(name) {
+        if (sceneNames[name]) return sceneNames[name];
+        const hallway = name.match(/scene_cie_hl(\d+)/);
+        if (hallway) return `Hành lang ${hallway[1]}`;
+        const lobby = name.match(/scene_cie_sanh(\d+)/);
+        if (lobby) return `Sảnh ${lobby[1]}`;
+        const room = name.match(/scene_cie_p(\d+)_([ab])/);
+        if (room) return `Phòng ${room[1]} · Góc ${room[2].toUpperCase()}`;
+        return "Trung tâm CIE";
+      }
+
+      function showCieStudentInfo() {
+        document.querySelector("#infoImage").hidden = false;
+        document.querySelector("#infoTitle").textContent = "Bộ phận Quản lý lưu học sinh";
+        document.querySelector("#infoModal .modal-card p:last-of-type").textContent =
+          "Đầu mối hỗ trợ, quản lý và cung cấp thông tin dành cho lưu học sinh đang học tập tại Học viện.";
+        document.querySelector("#infoModal").classList.add("open");
+        document.querySelector("#narrationBadge").classList.add("visible");
+        studentNarration.currentTime = 0;
+        window.dispatchEvent(new CustomEvent("ptit:narrationstart"));
+        studentNarration.play().catch(() => {
+          window.dispatchEvent(new CustomEvent("ptit:narrationend"));
+          document.querySelector("#narrationBadge").classList.remove("visible");
+        });
+      }
+
+      studentNarration.addEventListener("ended", () => {
+        window.dispatchEvent(new CustomEvent("ptit:narrationend"));
+        document.querySelector("#narrationBadge").classList.remove("visible");
+      });
+
+      function updateSceneTitle() {
+        if (!krpano) return;
+        const scene = krpano.get("xml.scene") || "";
+        if (!scene || scene === lastScene) return;
+        lastScene = scene;
+        document.querySelector("#sceneTitle").textContent = formatSceneName(scene);
+      }
+
+      embedpano({
+        xml: "tour.xml",
+        target: "pano",
+        html5: "only",
+        mobilescale: 1,
+        passQueryParameters: "startscene,startlookat",
+        onready(instance) {
+          krpano = instance;
+          window.ptitKrpano = instance;
+          krpano.call("delayedcall(0.4, skin_hideskin(instant); set(layer[skin_btn_show].visible,false); );");
+          setInterval(updateSceneTitle, 350);
+          setTimeout(() => document.querySelector("#loading").classList.add("done"), 900);
+          setTimeout(() => document.querySelector("#hint").style.opacity = "0", 6500);
+        }
+      });
+
+      document.querySelector("#resetView").addEventListener("click", () => krpano?.call("lookto(0,0,105,smooth(90,-90,120));"));
+      const modal = document.querySelector("#infoModal");
+      document.querySelector("#openInfo").addEventListener("click", () => {
+        stopStudentNarration();
+        document.querySelector("#infoImage").hidden = true;
+        document.querySelector("#infoTitle").textContent = "Trung tâm CIE";
+        document.querySelector("#infoModal .modal-card p:last-of-type").textContent =
+          "Di chuyển giữa các khu vực bằng hotspot ngay trong ảnh 360. Kéo để xoay góc nhìn, cuộn hoặc chụm hai ngón để phóng to.";
+        modal.classList.add("open");
+      });
+      document.querySelector("#closeInfo").addEventListener("click", () => { modal.classList.remove("open"); stopStudentNarration(); });
+      modal.addEventListener("click", (event) => {
+        if (event.target === modal) { modal.classList.remove("open"); stopStudentNarration(); }
+      });
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") { modal.classList.remove("open"); stopStudentNarration(); }
+      });
+    </script>
+    <script src="../../assets/audio/background-music.js"></script>
+    <script src="../../assets/tour-controls.js?v=2"></script>
+  </body>
+</html>

@@ -1,0 +1,533 @@
+﻿<krpano version="1.23" title="Virtual Tour">
+
+	<include url="skin/vtourskin.xml" />
+
+	<!-- customize skin settings: maps, gyro, webvr, thumbnails, tooltips, layout, design, ... -->
+	<skin_settings maps="false"
+	               maps_type="openstreetmaps"
+	               maps_bing_api_key=""
+	               maps_google_api_key=""
+	               maps_zoombuttons="false"
+	               maps_loadonfirstuse="true"
+	               gyro="true"
+	               gyro_keeplookingdirection="false"
+	               webvr="true"
+	               webvr_keeplookingdirection="true"
+	               webvr_prev_next_hotspots="true"
+	               autotour="false"
+	               littleplanetintro="false"
+	               followmousecontrol="false"
+	               title="true"
+	               thumbs="true"
+	               thumbs_width="120" thumbs_height="80" thumbs_padding="10" thumbs_crop="0|40|240|160"
+	               thumbs_opened="false"
+	               thumbs_text="false"
+	               thumbs_dragging="true"
+	               thumbs_onhoverscrolling="false"
+	               thumbs_scrollbuttons="false"
+	               thumbs_scrollindicator="false"
+	               thumbs_loop="false"
+	               tooltips_buttons="false"
+	               tooltips_thumbs="false"
+	               tooltips_hotspots="false"
+	               tooltips_mapspots="false"
+	               deeplinking="false"
+	               loadscene_flags="MERGE"
+	               loadscene_blend="OPENBLEND(0.5, 0.0, 0.75, 0.05, linear)"
+	               loadscene_blend_prev="SLIDEBLEND(0.5, 180, 0.75, linear)"
+	               loadscene_blend_next="SLIDEBLEND(0.5,   0, 0.75, linear)"
+	               loadingtext=""
+	               layout_width="100%"
+	               layout_maxwidth="814"
+	               controlbar_width="-24"
+	               controlbar_height="40"
+	               controlbar_offset="20"
+	               controlbar_offset_closed="-40"
+	               controlbar_overlap.no-fractionalscaling="10"
+	               controlbar_overlap.fractionalscaling="0"
+	               design_skin_images="vtourskin.png"
+	               design_bgcolor="0x2D3E50"
+	               design_bgalpha="0.8"
+	               design_bgborder="0"
+	               design_bgroundedge="1"
+	               design_bgshadow="0 4 10 0x000000 0.3"
+	               design_thumbborder_bgborder="3 0xFFFFFF 1.0"
+	               design_thumbborder_padding="2"
+	               design_thumbborder_bgroundedge="0"
+	               design_text_css="color:#FFFFFF; font-family:Arial;"
+	               design_text_shadow="1"
+	               />
+
+	<!--
+	    For an alternative skin design either change the <skin_settings> values 
+	    from above or optionally include one of the predefined designs from below.
+	-->
+	<!-- <include url="skin/vtourskin_design_flat_light.xml"  /> -->
+	<!-- <include url="skin/vtourskin_design_glass.xml"       /> -->
+	<!-- <include url="skin/vtourskin_design_ultra_light.xml" /> -->
+	<!-- <include url="skin/vtourskin_design_117.xml"         /> -->
+	<!-- <include url="skin/vtourskin_design_117round.xml"    /> -->
+	<!-- <include url="skin/vtourskin_design_black.xml"       /> -->
+	
+
+	
+	<scene name="scene_cie_cuatruoc" title="Cie_cuaTruoc" onstart="" thumburl="panos/Cie_cuaTruoc.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Cie_cuaTruoc.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Cie_cuaTruoc.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048" />
+		</image>
+
+		<hotspot name="spot2055821176" style="skin_hotspotstyle" ath="-1.455" atv="31.735" depth="1000.0" linkedscene="scene_cie_sanh1" linkedscene_lookat="3.46,-0.33,114.77" linkedscene_spot="spot2055822542" linkedscene_hoffset="7.22" use3dtransition="true" />
+
+	</scene>
+	
+	<scene name="scene_cie_cuasau" title="Cie_cuaSau" onstart="" thumburl="panos/Cie_cuaSau.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Cie_cuaSau.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Cie_cuaSau.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048" />
+		</image>
+
+		
+		<hotspot name="spot2055853127" style="skin_hotspotstyle" ath="-164.376" atv="36.903" depth="1000.0" linkedscene="scene_cie_sanhsau" linkedscene_lookat="4.12,-2.47,120.0" linkedscene_spot="spot2055852852" linkedscene_hoffset="297.63" use3dtransition="true" />
+
+	</scene>
+
+	<scene name="scene_cie_hl1" title="Cie_hl1" onstart="" thumburl="panos/Cie_hl1.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Cie_hl1.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Cie_hl1.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048" />
+		</image>
+
+		<hotspot name="spot2055849787" style="skin_hotspotstyle" ath="-2.237" atv="31.223" depth="1000.0" linkedscene="scene_cie_hl2" linkedscene_lookat="180.67,2.23,120.0" linkedscene_spot="spot2055849342" linkedscene_hoffset="5.22" use3dtransition="true" />
+		<hotspot name="spot2055850198" style="skin_hotspotstyle" ath="155.567" atv="28.513" depth="1000.0" linkedscene="scene_cie_sanhsau" linkedscene_lookat="-4.12,0.21,120.0" linkedscene_spot="spot2055850722" linkedscene_hoffset="176.27" use3dtransition="true" />
+		<hotspot name="spot2055855340" style="skin_hotspotstyle" ath="-38.561" atv="42.25" depth="1000.0" linkedscene="scene_cie_p506_a" linkedscene_lookat="0.0,0.0,120.0" linkedscene_spot="spot2055855768" linkedscene_hoffset="285.03" use3dtransition="true" />
+
+	</scene>
+
+	<scene name="scene_cie_hl2" title="Cie_hl2" onstart="" thumburl="panos/Cie_hl2.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Cie_hl2.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Cie_hl2.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048" />
+		</image>
+
+		<hotspot name="spot2055848786" style="skin_hotspotstyle" ath="2.279" atv="40.913" depth="1000.0" linkedscene="scene_cie_hl3" linkedscene_lookat="183.6,-2.27,120.0" linkedscene_spot="spot2055848378" linkedscene_hoffset="1.67" use3dtransition="true" />
+		<hotspot name="spot2055849342" style="skin_hotspotstyle" ath="-177.015" atv="17.996" depth="1000.0" linkedscene="scene_cie_hl1" linkedscene_lookat="180.67,2.23,120.0" linkedscene_spot="spot2055849787" linkedscene_hoffset="354.78" use3dtransition="true" />
+		<hotspot name="spot2055857268" style="skin_hotspotstyle" ath="66.703" atv="54.619" depth="1000.0" linkedscene="scene_cie_p501" linkedscene_lookat="0.0,0.0,120.0" linkedscene_spot="spot2055857731" linkedscene_hoffset="189.47" use3dtransition="true" />
+
+	</scene>
+
+	<scene name="scene_cie_hl3" title="Cie_hl3" onstart="" thumburl="panos/Cie_hl3.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Cie_hl3.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Cie_hl3.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048" />
+		</image>
+
+		<hotspot name="spot2055848182" style="skin_hotspotstyle" ath="1.869" atv="33.803" depth="1000.0" linkedscene="scene_cie_hl4" linkedscene_lookat="183.48,0.0,120.0" linkedscene_spot="spot2055847442" linkedscene_hoffset="-2.56" use3dtransition="true" />
+		<hotspot name="spot2055848378" style="skin_hotspotstyle" ath="-176.866" atv="9.931" depth="1000.0" linkedscene="scene_cie_hl2" linkedscene_lookat="183.6,-2.27,120.0" linkedscene_spot="spot2055848786" linkedscene_hoffset="358.33" use3dtransition="true" />
+		<hotspot name="spot2055872658" style="skin_hotspotstyle" ath="-140.829" atv="42.642" depth="1000.0" linkedscene="scene_cie_p506_b" linkedscene_spot="spot2055872955" linkedscene_hoffset="417.14" use3dtransition="true" />
+
+	</scene>
+
+	<scene name="scene_cie_hl4" title="Cie_hl4" onstart="" thumburl="panos/Cie_hl4.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Cie_hl4.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Cie_hl4.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048" />
+		</image>
+
+		<hotspot name="spot2055842075" style="skin_hotspotstyle" ath="-1.868" atv="26.869" depth="1000.0" linkedscene="scene_cie_hl5" linkedscene_lookat="178.95,0.4,109.49" linkedscene_spot="spot2055841083" linkedscene_hoffset="359.31" use3dtransition="true" />
+		<hotspot name="spot2055846395" style="skin_hotspotstyle" ath="-35.656" atv="42.489" depth="1000.0" linkedscene="scene_cie_p505_a" linkedscene_lookat="183.88,-0.24,120.0" linkedscene_spot="spot2055847024" linkedscene_hoffset="120.95" use3dtransition="true" />
+		<hotspot name="spot2055847442" style="skin_hotspotstyle" ath="-178.923" atv="35.761" depth="1000.0" linkedscene="scene_cie_hl3" linkedscene_lookat="183.48,0.0,120.0" linkedscene_spot="spot2055848182" linkedscene_hoffset="362.56" use3dtransition="true" />
+		<hotspot name="spot2055859781" style="skin_hotspotstyle" ath="154.601" atv="34.776" depth="1000.0" linkedscene="scene_cie_p502_a" linkedscene_lookat="0.0,0.0,120.0" linkedscene_spot="spot2055860185" linkedscene_hoffset="-58.58" use3dtransition="true" />
+		
+
+	</scene>
+
+	<scene name="scene_cie_hl5" title="Cie_hl5" onstart="" thumburl="panos/Cie_hl5.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Cie_hl5.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Cie_hl5.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048" />
+		</image>
+
+		<hotspot name="spot2055835255" style="skin_hotspotstyle" ath="-4.857" atv="24.295" depth="1000.0" linkedscene="scene_cie_hl7" linkedscene_lookat="173.88,-2.21,119.99" linkedscene_spot="spot2055833727" linkedscene_hoffset="10.51" use3dtransition="true" />
+		<hotspot name="spot2055837722" style="skin_hotspotstyle" ath="34.837" atv="44.856" depth="1000.0" linkedscene="scene_cie_p504_a" linkedscene_lookat="-6.39,-3.09,120.24" linkedscene_spot="spot2055836698" linkedscene_hoffset="77.14" use3dtransition="true" />
+		<hotspot name="spot2055840114" style="skin_hotspotstyle" ath="-24.376" atv="28.367" depth="1000.0" linkedscene="scene_cie_p503_b" linkedscene_lookat="1.44,-1.86,120.0" linkedscene_spot="spot2055839397" linkedscene_hoffset="104.64" use3dtransition="true" />
+		<hotspot name="spot2055841083" style="skin_hotspotstyle" ath="177.445" atv="18.524" depth="1000.0" linkedscene="scene_cie_hl4" linkedscene_lookat="178.95,0.4,109.49" linkedscene_spot="spot2055842075" linkedscene_hoffset="0.69" use3dtransition="true" />
+		<hotspot name="spot2055842246" style="skin_hotspotstyle" ath="-155.898" atv="36.222" depth="1000.0" linkedscene="scene_cie_p505_b" linkedscene_lookat="0.0,1.03,120.0" linkedscene_spot="spot2055842775" linkedscene_hoffset="257.83" use3dtransition="true" />
+		<hotspot name="spot2055869646" style="skin_hotspotstyle" ath="160.967" atv="21.283" depth="1000.0" linkedscene="scene_cie_p502_b" linkedscene_lookat="179.1,-0.41,120.0" linkedscene_spot="spot2055870730" linkedscene_hoffset="-51.22" use3dtransition="true" />
+		
+
+	</scene>
+
+	<scene name="scene_cie_hl6" title="Cie_hl6" onstart="" thumburl="panos/Cie_hl6.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Cie_hl6.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Cie_hl6.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_cie_hl7" title="Cie_hl7" onstart="" thumburl="panos/Cie_hl7.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Cie_hl7.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Cie_hl7.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048" />
+		</image>
+
+		<hotspot name="spot2055831050" style="skin_hotspotstyle" ath="4.000" atv="57.736" depth="1000.0" linkedscene="scene_cie_sanh5" linkedscene_lookat="183.81,0.27,138.41" linkedscene_spot="spot2055830406" linkedscene_hoffset="180.09" use3dtransition="true" />
+		<hotspot name="spot2055831368" style="skin_hotspotstyle" ath="145.195" atv="45.491" depth="1000.0" linkedscene="scene_cie_p504_b" linkedscene_lookat="-3.71,0.62,120.0" linkedscene_spot="spot2055832213" linkedscene_hoffset="107.45" use3dtransition="true" />
+		<hotspot name="spot2055832473" style="skin_hotspotstyle" ath="-138.662" atv="45.261" depth="1000.0" linkedscene="scene_cie_p503_a" linkedscene_lookat="-3.69,-0.41,120.0" linkedscene_spot="spot2055833418" linkedscene_hoffset="225.7" use3dtransition="true" />
+		<hotspot name="spot2055833727" style="skin_hotspotstyle" ath="-171.845" atv="29.672" depth="1000.0" linkedscene="scene_cie_hl5" linkedscene_lookat="173.88,-2.21,119.99" linkedscene_spot="spot2055835255" linkedscene_hoffset="349.49" use3dtransition="true" />
+
+	</scene>
+
+	<scene name="scene_cie_p501" title="Cie_p501" onstart="" thumburl="panos/Cie_p501.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Cie_p501.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Cie_p501.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048" />
+		</image>
+
+		<hotspot name="spot2055857731" style="skin_hotspotstyle" ath="75.964" atv="27.078" depth="1000.0" linkedscene="scene_cie_hl2" linkedscene_lookat="0.0,0.0,120.0" linkedscene_spot="spot2055857268" linkedscene_hoffset="170.53" use3dtransition="true" />
+
+	</scene>
+
+	<scene name="scene_cie_p502_a" title="Cie_p502_a" onstart="" thumburl="panos/Cie_p502_a.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Cie_p502_a.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Cie_p502_a.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048" />
+		</image>
+
+		<hotspot name="spot2055845691" style="skin_hotspotstyle" ath="-1.264" atv="28.952" depth="1000.0" linkedscene="scene_cie_p502_b" linkedscene_lookat="-180.14,0.34,148.88" linkedscene_spot="spot2055844830" linkedscene_hoffset="1.72" use3dtransition="true" />
+		<hotspot name="spot2055860185" style="skin_hotspotstyle" ath="-83.979" atv="23.711" depth="1000.0" linkedscene="scene_cie_hl4" linkedscene_lookat="0.0,0.0,120.0" linkedscene_spot="spot2055859781" linkedscene_hoffset="418.58" use3dtransition="true" />
+
+	</scene>
+
+	<scene name="scene_cie_p502_b" title="Cie_p502_b" onstart="" thumburl="panos/Cie_p502_b.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Cie_p502_b.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Cie_p502_b.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048" />
+		</image>
+
+		<hotspot name="spot2055844628" style="skin_hotspotstyle" ath="-70.083" atv="23.536" depth="1000.0" linkedscene="scene_cie_hl5" linkedscene_lookat="181.38,1.65,120.0" linkedscene_spot="spot2055844002" linkedscene_hoffset="410.68" use3dtransition="true" />
+		<hotspot name="spot2055844830" style="skin_hotspotstyle" ath="-179.547" atv="21.415" depth="1000.0" linkedscene="scene_cie_p502_a" linkedscene_lookat="-180.14,0.34,148.88" linkedscene_spot="spot2055845691" linkedscene_hoffset="358.28" use3dtransition="true" />
+		<hotspot name="spot2055870730" style="skin_hotspotstyle" ath="-70.253" atv="23.797" depth="1000.0" linkedscene="scene_cie_hl5" linkedscene_lookat="179.1,-0.41,120.0" linkedscene_spot="spot2055869646" linkedscene_hoffset="411.22" use3dtransition="true" />
+
+	</scene>
+
+	<scene name="scene_cie_p503_a" title="Cie_p503_a" onstart="" thumburl="panos/Cie_p503_a.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Cie_p503_a.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Cie_p503_a.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048" />
+		</image>
+
+		<hotspot name="spot2055833418" style="skin_hotspotstyle" ath="-92.966" atv="23.946" depth="1000.0" linkedscene="scene_cie_hl7" linkedscene_lookat="-3.69,-0.41,120.0" linkedscene_spot="spot2055832473" linkedscene_hoffset="134.3" use3dtransition="true" />
+		<hotspot name="spot2055838651" style="skin_hotspotstyle" ath="-3.091" atv="25.675" depth="1000.0" linkedscene="scene_cie_p503_b" linkedscene_lookat="-4.19,-1.93,142.1" linkedscene_spot="spot2055839037" linkedscene_hoffset="360.0" use3dtransition="true" />
+
+	</scene>
+
+	<scene name="scene_cie_p503_b" title="Cie_p503_b" onstart="" thumburl="panos/Cie_p503_b.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Cie_p503_b.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Cie_p503_b.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048" />
+		</image>
+
+		<hotspot name="spot2055839037" style="skin_hotspotstyle" ath="176.909" atv="25.675" depth="1000.0" linkedscene="scene_cie_p503_a" linkedscene_lookat="-4.19,-1.93,142.1" linkedscene_spot="spot2055838651" linkedscene_hoffset="0.0" use3dtransition="true" />
+		<hotspot name="spot2055839397" style="skin_hotspotstyle" ath="-98.807" atv="24.333" depth="1000.0" linkedscene="scene_cie_hl5" linkedscene_lookat="1.44,-1.86,120.0" linkedscene_spot="spot2055840114" linkedscene_hoffset="255.36" use3dtransition="true" />
+
+	</scene>
+
+	<scene name="scene_cie_p504_a" title="Cie_p504_a" onstart="" thumburl="panos/Cie_p504_a.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Cie_p504_a.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Cie_p504_a.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048" />
+		</image>
+
+		<hotspot name="spot2055836314" style="skin_hotspotstyle" ath="0.188" atv="30.55" depth="1000.0" linkedscene="scene_cie_p504_b" linkedscene_lookat="181.47,-0.35,129.78" linkedscene_spot="spot2055835618" linkedscene_hoffset="175.36" use3dtransition="true" />
+		<hotspot name="spot2055836698" style="skin_hotspotstyle" ath="-68.025" atv="25.507" depth="1000.0" linkedscene="scene_cie_hl5" linkedscene_lookat="-6.39,-3.09,120.24" linkedscene_spot="spot2055837722" linkedscene_hoffset="282.86" use3dtransition="true" />
+
+	</scene>
+
+	<scene name="scene_cie_p504_b" title="Cie_p504_b" onstart="" thumburl="panos/Cie_p504_b.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Cie_p504_b.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Cie_p504_b.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048" />
+		</image>
+
+		<hotspot name="spot2055832213" style="skin_hotspotstyle" ath="72.646" atv="27.909" depth="1000.0" linkedscene="scene_cie_hl7" linkedscene_lookat="-3.71,0.62,120.0" linkedscene_spot="spot2055831368" linkedscene_hoffset="252.55" use3dtransition="true" />
+		<hotspot name="spot2055835618" style="skin_hotspotstyle" ath="-4.455" atv="24.198" depth="1000.0" linkedscene="scene_cie_p504_a" linkedscene_lookat="181.47,-0.35,129.78" linkedscene_spot="spot2055836314" linkedscene_hoffset="184.64" use3dtransition="true" />
+
+	</scene>
+
+	<scene name="scene_cie_p505_a" title="Cie_p505_a" onstart="" thumburl="panos/Cie_p505_a.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Cie_p505_a.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Cie_p505_a.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048" />
+		</image>
+
+		<hotspot name="spot2055843462" style="skin_hotspotstyle" ath="-178.581" atv="27.341" depth="1000.0" linkedscene="scene_cie_p505_b" linkedscene_lookat="1.44,0.21,120.0" linkedscene_spot="spot2055843020" linkedscene_hoffset="356.65" use3dtransition="true" />
+		<hotspot name="spot2055847024" style="skin_hotspotstyle" ath="-94.71" atv="21.194" depth="1000.0" linkedscene="scene_cie_hl4" linkedscene_lookat="113.68,3.19,120.0" linkedscene_spot="spot2055846395" linkedscene_hoffset="239.05" use3dtransition="true" />
+
+	</scene>
+
+	<scene name="scene_cie_p505_b" title="Cie_p505_b" onstart="" thumburl="panos/Cie_p505_b.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Cie_p505_b.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Cie_p505_b.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048" />
+		</image>
+
+		
+		<hotspot name="spot2055843020" style="skin_hotspotstyle" ath="-2.145" atv="21.659" depth="1000.0" linkedscene="scene_cie_p505_a" linkedscene_lookat="1.44,0.21,120.0" linkedscene_spot="spot2055843462" linkedscene_hoffset="3.35" use3dtransition="true" />
+		<hotspot name="spot2055842775" style="skin_hotspotstyle" ath="-78.066" atv="20.141" depth="1000.0" linkedscene="scene_cie_hl5" linkedscene_lookat="0.0,1.03,120.0" linkedscene_spot="spot2055842246" linkedscene_hoffset="102.17" use3dtransition="true" />
+		
+
+	</scene>
+
+	<scene name="scene_cie_p506_a" title="Cie_p506_a" onstart="" thumburl="panos/Cie_p506_a.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Cie_p506_a.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Cie_p506_a.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048" />
+		</image>
+
+		<hotspot name="spot2055855768" style="skin_hotspotstyle" ath="66.472" atv="25.187" depth="1000.0" linkedscene="scene_cie_hl1" linkedscene_lookat="0.0,0.0,120.0" linkedscene_spot="spot2055855340" linkedscene_hoffset="74.97" use3dtransition="true" />
+		<hotspot name="spot2055856047" style="skin_hotspotstyle" ath="-2.653" atv="24.798" depth="1000.0" linkedscene="scene_cie_p506_b" linkedscene_lookat="-3.18,1.29,148.82" linkedscene_spot="spot2055856300" linkedscene_hoffset="360.0" use3dtransition="true" />
+
+	</scene>
+
+	<scene name="scene_cie_p506_b" title="Cie_p506_b" onstart="" thumburl="panos/Cie_p506_b.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Cie_p506_b.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Cie_p506_b.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048" />
+		</image>
+
+		<hotspot name="spot2055856300" style="skin_hotspotstyle" ath="177.347" atv="24.798" depth="1000.0" linkedscene="scene_cie_p506_a" linkedscene_lookat="-3.18,1.29,148.82" linkedscene_spot="spot2055856047" linkedscene_hoffset="0.0" use3dtransition="true" />
+		
+		<hotspot name="spot2055872955" style="skin_hotspotstyle" ath="96.309" atv="22.92" depth="1000.0" linkedscene="scene_cie_hl3" linkedscene_lookat="177.65,2.32,120.0" linkedscene_spot="spot2055872658" linkedscene_hoffset="-57.14" use3dtransition="true" />
+
+	</scene>
+
+	<scene name="scene_cie_sanh1" title="Cie_sanh1" onstart="" thumburl="panos/Cie_sanh1.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Cie_sanh1.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Cie_sanh1.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048" />
+		</image>
+
+		<hotspot name="spot2055822542" style="skin_hotspotstyle" ath="-174.234" atv="51.494" depth="1000.0" linkedscene="scene_cie_cuatruoc" linkedscene_lookat="3.46,-0.33,114.77" linkedscene_spot="spot2055821176" linkedscene_hoffset="352.78" use3dtransition="true" />
+		<hotspot name="spot2055824361" style="skin_hotspotstyle" ath="1.447" atv="21.435" depth="1000.0" linkedscene="scene_cie_sanh2" linkedscene_lookat="-6.8,0.0,120.0" linkedscene_spot="spot2055825381" linkedscene_hoffset="357.44" use3dtransition="true" />
+
+	</scene>
+
+	<scene name="scene_cie_sanh2" title="Cie_sanh2" onstart="" thumburl="panos/Cie_sanh2.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Cie_sanh2.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Cie_sanh2.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048" />
+		</image>
+
+		<hotspot name="spot2055825381" style="skin_hotspotstyle" ath="178.892" atv="28.965" depth="1000.0" linkedscene="scene_cie_sanh1" linkedscene_lookat="-6.8,0.0,120.0" linkedscene_spot="spot2055824361" linkedscene_hoffset="2.56" use3dtransition="true" />
+		<hotspot name="spot2055825938" style="skin_hotspotstyle" ath="-9.475" atv="29.317" depth="1000.0" linkedscene="scene_cie_sanh3" linkedscene_lookat="-3.76,-0.38,129.69" linkedscene_spot="spot2055826925" linkedscene_hoffset="9.7" use3dtransition="true" />
+		<hotspot name="spot2055827601" style="skin_hotspotstyle" ath="74.169" atv="37.616" depth="1000.0" linkedscene="scene_cie_sanh4" linkedscene_lookat="89.28,0.98,134.14" linkedscene_spot="spot2055828150" linkedscene_hoffset="13.75" use3dtransition="true" />
+
+	</scene>
+
+	<scene name="scene_cie_sanh3" title="Cie_sanh3" onstart="" thumburl="panos/Cie_sanh3.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Cie_sanh3.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Cie_sanh3.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048" />
+		</image>
+
+		<hotspot name="spot2055826925" style="skin_hotspotstyle" ath="-179.772" atv="33.405" depth="1000.0" linkedscene="scene_cie_sanh2" linkedscene_lookat="-3.76,-0.38,129.69" linkedscene_spot="spot2055825938" linkedscene_hoffset="350.3" use3dtransition="true" />
+		<hotspot name="spot2055829234" style="skin_hotspotstyle" ath="40.516" atv="24.043" depth="1000.0" linkedscene="scene_cie_sanh5" linkedscene_lookat="1.86,0.62,120.0" linkedscene_spot="spot2055829695" linkedscene_hoffset="360.0" use3dtransition="true" />
+
+	</scene>
+
+	<scene name="scene_cie_sanh4" title="Cie_sanh4" onstart="" thumburl="panos/Cie_sanh4.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Cie_sanh4.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Cie_sanh4.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048" />
+		</image>
+
+		<hotspot name="spot2055828150" style="skin_hotspotstyle" ath="-92.084" atv="43.427" depth="1000.0" linkedscene="scene_cie_sanh2" linkedscene_lookat="89.28,0.98,134.14" linkedscene_spot="spot2055827601" linkedscene_hoffset="346.25" use3dtransition="true" />
+		<hotspot name="spot2055828476" style="skin_hotspotstyle" ath="-1.549" atv="16.208" depth="1000.0" linkedscene="scene_cie_sanh5" linkedscene_lookat="2.47,0.82,120.0" linkedscene_spot="spot2055828918" linkedscene_hoffset="6.68" use3dtransition="true" />
+
+	</scene>
+
+	<scene name="scene_cie_sanh5" title="Cie_sanh5" onstart="" thumburl="panos/Cie_sanh5.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Cie_sanh5.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Cie_sanh5.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048" />
+		</image>
+
+		<hotspot name="spot2055828918" style="skin_hotspotstyle" ath="-175.7" atv="29.03" depth="1000.0" linkedscene="scene_cie_sanh4" linkedscene_lookat="2.47,0.82,120.0" linkedscene_spot="spot2055828476" linkedscene_hoffset="353.32" use3dtransition="true" />
+		<hotspot name="spot2055829695" style="skin_hotspotstyle" ath="-139.2" atv="26.002" depth="1000.0" linkedscene="scene_cie_sanh3" linkedscene_lookat="1.86,0.62,120.0" linkedscene_spot="spot2055829234" linkedscene_hoffset="0.0" use3dtransition="true" />
+		<hotspot name="spot2055830406" style="skin_hotspotstyle" ath="3.627" atv="28.14" depth="1000.0" linkedscene="scene_cie_hl7" linkedscene_lookat="183.81,0.27,138.41" linkedscene_spot="spot2055831050" linkedscene_hoffset="179.91" use3dtransition="true" />
+		<hotspot name="info_student_management" style="skin_infopoststyle" ath="50.0" atv="0.0" tooltip="Bộ phận Quản lý lưu học sinh" onclick="js(showCieStudentInfo());" />
+
+	</scene>
+
+	<scene name="scene_cie_sanhsau" title="Cie_sanhSau" onstart="" thumburl="panos/Cie_sanhSau.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/Cie_sanhSau.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/Cie_sanhSau.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,2048" />
+		</image>
+
+		<hotspot name="spot2055850722" style="skin_hotspotstyle" ath="151.84" atv="39.454" depth="1000.0" linkedscene="scene_cie_hl1" linkedscene_lookat="-4.12,0.21,120.0" linkedscene_spot="spot2055850198" linkedscene_hoffset="183.73" use3dtransition="true" />
+		<hotspot name="spot2055852852" style="skin_hotspotstyle" ath="-46.744" atv="28.598" depth="1000.0" linkedscene="scene_cie_cuasau" linkedscene_lookat="4.12,-2.47,120.0" linkedscene_spot="spot2055853127" linkedscene_hoffset="62.37" use3dtransition="true" />
+		
+
+	</scene>
+
+
+</krpano>
