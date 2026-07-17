@@ -6,6 +6,7 @@
     <meta name="theme-color" content="#111216" />
     <title>PTIT CIE Virtual Tour</title>
     <link rel="stylesheet" href="../../assets/tour-controls.css?v=2" />
+    <link rel="stylesheet" href="../../assets/tour-navigation.css?v=1" />
     <style>
       :root {
         --red: #d71920;
@@ -385,5 +386,54 @@
     </script>
     <script src="../../assets/audio/background-music.js"></script>
     <script src="../../assets/tour-controls.js?v=2"></script>
+    <script>
+      window.PTIT_TOUR_NAV_CONFIG = {
+        title: "Sơ đồ Trung tâm CIE",
+        floors: [
+          {
+            id: "lobby", label: "Lối vào & sảnh",
+            nodes: [
+              {id:"front",label:"Cửa trước",short:"Cửa trước",scene:"scene_cie_cuatruoc",type:"entrance",x:8,y:72},
+              {id:"s1",label:"Sảnh 1",short:"S1",scene:"scene_cie_sanh1",type:"hallway",x:24,y:72},
+              {id:"s2",label:"Sảnh 2",short:"S2",scene:"scene_cie_sanh2",type:"hallway",x:40,y:55},
+              {id:"s3",label:"Sảnh 3",short:"S3",scene:"scene_cie_sanh3",type:"hallway",x:57,y:34},
+              {id:"s4",label:"Sảnh 4",short:"S4",scene:"scene_cie_sanh4",type:"hallway",x:57,y:76},
+              {id:"s5",label:"Sảnh 5",short:"S5",scene:"scene_cie_sanh5",type:"hallway",x:73,y:55},
+              {id:"rear",label:"Sảnh sau",short:"Sảnh sau",scene:"scene_cie_sanhsau",type:"hallway",x:87,y:72},
+              {id:"rear-door",label:"Cửa sau",short:"Cửa sau",scene:"scene_cie_cuasau",type:"entrance",x:96,y:72}
+            ],
+            edges:[["front","s1"],["s1","s2"],["s2","s3"],["s2","s4"],["s3","s5"],["s4","s5"],["s5","rear"],["rear","rear-door"]]
+          },
+          {
+            id: "floor5", label: "Tầng 5",
+            nodes: [
+              {id:"h1",label:"Hành lang 1",short:"H1",scene:"scene_cie_hl1",type:"hallway",x:9,y:50},
+              {id:"h2",label:"Hành lang 2",short:"H2",scene:"scene_cie_hl2",type:"hallway",x:23,y:50},
+              {id:"h3",label:"Hành lang 3",short:"H3",scene:"scene_cie_hl3",type:"hallway",x:37,y:50},
+              {id:"h4",label:"Hành lang 4",short:"H4",scene:"scene_cie_hl4",type:"hallway",x:51,y:50},
+              {id:"h5",label:"Hành lang 5",short:"H5",scene:"scene_cie_hl5",type:"hallway",x:66,y:50},
+              {id:"h7",label:"Hành lang 7",short:"H7",scene:"scene_cie_hl7",type:"hallway",x:81,y:50},
+              {id:"h6",label:"Hành lang 6",short:"H6",scene:"scene_cie_hl6",type:"hallway",x:94,y:50},
+              {id:"r506",label:"Phòng 506",short:"506",scene:"scene_cie_p506_a",aliases:["scene_cie_p506_b"],type:"room",x:17,y:18},
+              {id:"r501",label:"Phòng 501",short:"501",scene:"scene_cie_p501",type:"room",x:27,y:82},
+              {id:"r502",label:"Phòng 502",short:"502",scene:"scene_cie_p502_a",aliases:["scene_cie_p502_b"],type:"room",x:50,y:18},
+              {id:"r505",label:"Phòng 505",short:"505",scene:"scene_cie_p505_a",aliases:["scene_cie_p505_b"],type:"room",x:59,y:82},
+              {id:"r503",label:"Phòng 503",short:"503",scene:"scene_cie_p503_a",aliases:["scene_cie_p503_b"],type:"room",x:77,y:18},
+              {id:"r504",label:"Phòng 504",short:"504",scene:"scene_cie_p504_a",aliases:["scene_cie_p504_b"],type:"room",x:86,y:82}
+            ],
+            edges:[["h1","h2"],["h2","h3"],["h3","h4"],["h4","h5"],["h5","h7"],["h7","h6"],["h1","r506"],["h2","r501"],["h4","r502"],["h4","r505"],["h5","r503"],["h7","r504"]]
+          }
+        ],
+        guided: [
+          {scene:"scene_cie_cuatruoc",lookat:[0,0,105],title:"Cửa tòa nhà CIE",description:"Điểm bắt đầu của hành trình tham quan Trung tâm CIE.",narration:"Chào mừng bạn đến với Trung tâm CIE. Hành trình tham quan bắt đầu từ khu vực cửa trước của tòa nhà."},
+          {scene:"scene_cie_sanh1",lookat:[0,0,105],title:"Sảnh đón tiếp",description:"Không gian kết nối từ cửa chính đến các khu vực chức năng.",narration:"Bạn đang ở sảnh đón tiếp của Trung tâm CIE. Từ đây, chúng ta sẽ tiếp tục di chuyển qua khu vực sảnh và hành lang."},
+          {scene:"scene_cie_sanh5",lookat:[0,0,105],title:"Khu vực chức năng",description:"Điểm chuyển tiếp giữa sảnh và hành lang các phòng học.",narration:"Đây là khu vực chức năng, kết nối sảnh chính với hành lang dẫn đến các phòng học và phòng làm việc của trung tâm."},
+          {scene:"scene_cie_hl7",lookat:[180,0,105],title:"Hành lang tầng 5",description:"Hành lang dẫn tới các phòng 503 và 504.",narration:"Bạn đang tham quan hành lang tầng năm. Các điểm điều hướng xung quanh sẽ dẫn đến từng phòng học và phòng chức năng."},
+          {scene:"scene_cie_p503_a",lookat:[0,0,105],title:"Phòng 503",description:"Một trong các không gian học tập của Trung tâm CIE.",narration:"Đây là phòng năm không ba, một không gian phục vụ hoạt động học tập, trao đổi và tổ chức các chương trình đào tạo của Trung tâm CIE."},
+          {scene:"scene_cie_sanh5",lookat:[50,0,90],title:"Bộ phận Quản lý lưu học sinh",description:"Điểm thông tin nổi bật hỗ trợ lưu học sinh đang học tập tại Học viện.",narration:"Điểm nổi bật cuối hành trình là Bộ phận Quản lý lưu học sinh, nơi hỗ trợ, quản lý và cung cấp thông tin dành cho lưu học sinh đang học tập tại Học viện."}
+        ]
+      };
+    </script>
+    <script src="../../assets/tour-navigation.js?v=1"></script>
   </body>
 </html>

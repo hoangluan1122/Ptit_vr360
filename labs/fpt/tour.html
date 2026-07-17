@@ -6,6 +6,7 @@
     <meta name="theme-color" content="#111216" />
     <title>PTIT FPT Virtual Tour</title>
     <link rel="stylesheet" href="../../assets/tour-controls.css?v=2" />
+    <link rel="stylesheet" href="../../assets/tour-navigation.css?v=1" />
     <style>
       :root { --red:#d71920; --glass:rgba(17,18,22,.76); font-family:Inter,"Segoe UI",Arial,sans-serif; }
       * { box-sizing:border-box; }
@@ -151,5 +152,29 @@
     </script>
     <script src="../../assets/audio/background-music.js"></script>
     <script src="../../assets/tour-controls.js?v=2"></script>
+    <script>
+      window.PTIT_TOUR_NAV_CONFIG = {
+        title: "Sơ đồ phòng lab FPT",
+        floors: [{
+          id:"lab", label:"Tầng 2 · Phòng lab",
+          nodes:[
+            {id:"corridor",label:"Hành lang",short:"Hành lang",scene:"scene_viettel2a_",type:"entrance",x:10,y:52},
+            {id:"f1",label:"Lab · Góc 1",short:"Góc 1",scene:"scene_fpt1",type:"lab",x:31,y:52},
+            {id:"f2",label:"Lab · Góc 2",short:"Góc 2",scene:"scene_fpt2a",type:"lab",x:53,y:25},
+            {id:"f3",label:"Lab · Góc 3",short:"Góc 3",scene:"scene_fpt3a",type:"lab",x:76,y:52},
+            {id:"f4",label:"Lab · Góc 4",short:"Góc 4",scene:"scene_fpt4a",type:"lab",x:53,y:79}
+          ],
+          edges:[["corridor","f1"],["f1","f2"],["f2","f3"],["f3","f4"],["f4","f1"]]
+        }],
+        guided:[
+          {scene:"scene_viettel2a_",lookat:[0,0,105],title:"Hành lang trước phòng lab",description:"Điểm bắt đầu trước cửa không gian thực hành FPT.",narration:"Chào mừng bạn đến với phòng lab FPT. Hành trình bắt đầu tại hành lang phía trước phòng thực hành."},
+          {scene:"scene_fpt1",lookat:[0,0,105],title:"Không gian phòng lab FPT",description:"Phòng máy phục vụ học tập, nghiên cứu và thực hành công nghệ viễn thông.",narration:"Bạn đang ở trong phòng lab FPT. Không gian được trang bị hệ thống máy tính và thiết bị chuyên dụng phục vụ học tập, nghiên cứu và thực hành."},
+          {scene:"scene_fpt2a",lookat:[90,0,100],title:"Khu mô hình mạng quang",description:"Hai bảng thực hành mô phỏng thiết bị ODN và hệ thống phối cáp ngoại vi.",narration:"Phía trước là khu mô hình mạng quang, gồm mô hình thiết bị mạng O D N và sơ đồ phối cáp ngoại vi."},
+          {scene:"scene_fpt2a",lookat:[77,1,82],title:"Mô hình thiết bị mạng ODN",description:"Nhận diện hộp cáp, bộ chia quang, cáp thuê bao và thiết bị đầu cuối.",narration:"Mô hình thiết bị mạng O D N giới thiệu các phần tử thụ động trên mạng phân phối quang, giúp sinh viên nhận diện thiết bị và thực hành đấu nối tuyến thuê bao."},
+          {scene:"scene_fpt2a",lookat:[112,0,82],title:"Sơ đồ phối cáp ngoại vi",description:"Minh họa cách phân phối tuyến cáp từ mạng chính đến hộp cáp nhánh và thuê bao.",narration:"Sơ đồ phối cáp ngoại vi minh họa quá trình phân phối tuyến cáp từ mạng chính đến các hộp cáp nhánh và điểm kết nối của thuê bao."}
+        ]
+      };
+    </script>
+    <script src="../../assets/tour-navigation.js?v=1"></script>
   </body>
 </html>
