@@ -20,9 +20,20 @@
       .brand span { margin-top:3px; color:rgba(255,255,255,.58); font-size:11px; }
       .scene-status { min-width:0; display:flex; align-items:center; gap:9px; margin-left:auto; padding:10px 13px; border-radius:11px; background:rgba(255,255,255,.09); color:rgba(255,255,255,.84); font-size:12px; }
       .status-dot { width:7px; height:7px; border-radius:50%; background:#ff5961; box-shadow:0 0 0 4px rgba(255,89,97,.14); }
-      .loading { position:fixed; z-index:50; inset:0; display:grid; place-items:center; background:#111216; color:#fff; transition:opacity .5s,visibility .5s; }
+      .loading { position:fixed; z-index:50; inset:0; display:grid; place-items:center; background:#111216; color:#fff; transition:opacity .5s,visibility .5s,background .25s; }
+      .loading.preview-ready { background:rgba(17,18,22,.18); }
       .loading.done { opacity:0; visibility:hidden; pointer-events:none; }
-      .loading-mark { display:grid; place-items:center; width:58px; height:58px; border-radius:16px; background:var(--red); font-size:14px; font-weight:800; }
+      .loading-inner { width:min(280px,calc(100vw - 48px)); text-align:center; }
+      .loading-mark { display:grid; place-items:center; width:58px; height:58px; margin:0 auto 22px; border-radius:16px; background:var(--red); font-size:14px; font-weight:800; }
+      .loading-title { margin:0 0 18px; font-size:13px; font-weight:600; letter-spacing:.04em; }
+      .loading-track { height:2px; overflow:hidden; border-radius:2px; background:rgba(255,255,255,.12); }
+      .loading-bar { width:0; height:100%; background:#ff5a62; transition:width .22s ease; }
+      .loading-percent { display:block; margin-top:10px; color:rgba(255,255,255,.72); font-size:11px; font-variant-numeric:tabular-nums; }
+      .loading.compact { align-items:end; padding-bottom:82px; background:transparent; pointer-events:none; }
+      .loading.compact .loading-inner { width:220px; padding:12px 14px; border:1px solid rgba(255,255,255,.14); border-radius:12px; background:rgba(17,18,22,.76); box-shadow:0 10px 30px rgba(0,0,0,.24); backdrop-filter:blur(14px); }
+      .loading.compact .loading-mark { display:none; }
+      .loading.compact .loading-title { margin-bottom:10px; font-size:11px; }
+      .loading.compact .loading-percent { margin-top:7px; font-size:10px; }
       .info-backdrop { position:fixed; z-index:80; inset:0; display:grid; place-items:center; padding:20px; background:rgba(8,10,14,.56); opacity:0; visibility:hidden; backdrop-filter:blur(10px); transition:opacity .2s,visibility .2s; }
       .info-backdrop.open { opacity:1; visibility:visible; }
       .info-card { position:relative; width:min(520px,100%); overflow:hidden; border:1px solid rgba(255,255,255,.16); border-radius:22px; background:linear-gradient(145deg,#fff,#f4f5f7); color:#17191f; box-shadow:0 28px 90px rgba(0,0,0,.36); transform:translateY(12px) scale(.98); transition:transform .22s ease; }
@@ -48,7 +59,14 @@
   </head>
   <body>
     <div id="pano"></div>
-    <div id="loading" class="loading"><div class="loading-mark">PTIT</div></div>
+    <div id="loading" class="loading" role="progressbar" aria-live="polite" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+      <div class="loading-inner">
+        <div class="loading-mark">PTIT</div>
+        <p class="loading-title">Đang mở không gian FPT</p>
+        <div class="loading-track"><div class="loading-bar"></div></div>
+        <span class="loading-percent">0%</span>
+      </div>
+    </div>
     <header class="topbar">
       <a class="map-back" href="../../index.html" aria-label="Quay lại bản đồ"><b>←</b><span>Bản đồ</span></a>
       <div class="logo" aria-hidden="true">PTIT</div>
@@ -80,6 +98,7 @@
         </div>
       </article>
     </div>
+    <script src="../../assets/tour-loading.js?v=1"></script>
     <script src="tour.js"></script>
     <script>
       const names={scene_viettel2a_:"Hành lang",scene_fpt1:"Phòng FPT · Góc 1",scene_fpt2a:"Phòng FPT · Góc 2",scene_fpt3a:"Phòng FPT · Góc 3",scene_fpt4a:"Phòng FPT · Góc 4"};
@@ -125,9 +144,9 @@
       document.addEventListener("keydown",event=>{if(event.key==="Escape")closeFptOpticalInfo();});
       embedpano({xml:"tour.xml",target:"pano",html5:"only",passQueryParameters:"startscene,startlookat",onready(instance){
         window.ptitKrpano=instance;
+        window.ptitAttachTourLoader?.(instance);
         instance.call("delayedcall(0.3, skin_hideskin(instant); set(layer[skin_btn_show].visible,false); );");
         setInterval(()=>{const scene=instance.get("xml.scene")||"";if(scene&&scene!==lastScene){lastScene=scene;document.querySelector("#sceneTitle").textContent=names[scene]||"Phòng lab FPT";}},350);
-        setTimeout(()=>document.querySelector("#loading").classList.add("done"),800);
       }});
     </script>
     <script src="../../assets/audio/background-music.js"></script>

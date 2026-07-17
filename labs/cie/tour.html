@@ -175,12 +175,19 @@
         color: #fff;
         transition: opacity 500ms ease, visibility 500ms ease;
       }
+      .loading.preview-ready { background: rgba(17,18,22,.18); }
       .loading.done { opacity: 0; visibility: hidden; pointer-events: none; }
       .loading-inner { width: min(280px, calc(100vw - 48px)); text-align: center; }
       .loading-mark { display: grid; place-items: center; width: 58px; height: 58px; margin: 0 auto 22px; border-radius: 16px; background: var(--red); font-size: 14px; font-weight: 800; }
       .loading-title { margin: 0 0 18px; font-size: 13px; font-weight: 600; letter-spacing: 0.04em; }
       .loading-track { height: 2px; overflow: hidden; border-radius: 2px; background: rgba(255, 255, 255, 0.12); }
-      .loading-bar { width: 38%; height: 100%; background: #ff5a62; animation: loading 1.2s ease-in-out infinite; }
+      .loading-bar { width: 0; height: 100%; background: #ff5a62; transition: width 220ms ease; }
+      .loading-percent { display:block; margin-top:10px; color:rgba(255,255,255,.72); font-size:11px; font-variant-numeric:tabular-nums; }
+      .loading.compact { align-items:end; padding-bottom:82px; background:transparent; pointer-events:none; }
+      .loading.compact .loading-inner { width:220px; padding:12px 14px; border:1px solid rgba(255,255,255,.14); border-radius:12px; background:rgba(17,18,22,.76); box-shadow:0 10px 30px rgba(0,0,0,.24); backdrop-filter:blur(14px); }
+      .loading.compact .loading-mark { display:none; }
+      .loading.compact .loading-title { margin-bottom:10px; font-size:11px; }
+      .loading.compact .loading-percent { margin-top:7px; font-size:10px; }
 
       .modal {
         position: fixed;
@@ -208,11 +215,6 @@
       .narration-wave i:nth-child(3) { height: 9px; animation-delay: -.18s; }
       .modal-close { position: absolute; z-index: 2; top: 12px; right: 12px; background: rgba(255,255,255,.88); color: #17191f; backdrop-filter: blur(10px); }
 
-      @keyframes loading {
-        0% { transform: translateX(-120%); }
-        50% { transform: translateX(95%); }
-        100% { transform: translateX(260%); }
-      }
       @keyframes audio-wave { from { transform: scaleY(.45); opacity: .55; } to { transform: scaleY(1); opacity: 1; } }
 
       @media (max-width: 620px) {
@@ -234,11 +236,12 @@
   <body>
     <div id="pano"></div>
 
-    <div id="loading" class="loading" aria-live="polite">
+    <div id="loading" class="loading" role="progressbar" aria-live="polite" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
       <div class="loading-inner">
         <div class="loading-mark">PTIT</div>
         <p class="loading-title">Đang mở không gian CIE</p>
         <div class="loading-track"><div class="loading-bar"></div></div>
+        <span class="loading-percent">0%</span>
       </div>
     </div>
 
@@ -286,6 +289,7 @@
       </section>
     </div>
 
+    <script src="../../assets/tour-loading.js?v=1"></script>
     <script src="tour.js"></script>
     <script>
       const sceneNames = {
@@ -354,9 +358,9 @@
         onready(instance) {
           krpano = instance;
           window.ptitKrpano = instance;
+          window.ptitAttachTourLoader?.(instance);
           krpano.call("delayedcall(0.4, skin_hideskin(instant); set(layer[skin_btn_show].visible,false); );");
           setInterval(updateSceneTitle, 350);
-          setTimeout(() => document.querySelector("#loading").classList.add("done"), 900);
           setTimeout(() => document.querySelector("#hint").style.opacity = "0", 6500);
         }
       });
