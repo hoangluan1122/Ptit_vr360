@@ -118,6 +118,7 @@
 
 		<hotspot name="spot2061437017" style="skin_hotspotstyle" ath="-130.78" atv="16.66" depth="1000.0" linkedscene="scene_fpt1" linkedscene_lookat="0.0,0.0,120.0" linkedscene_spot="spot2061436517" linkedscene_hoffset="373.29" use3dtransition="true" />
 		<hotspot name="spot2061438046" style="skin_hotspotstyle" ath="-1.02" atv="15.881" depth="1000.0" linkedscene="scene_fpt3a" linkedscene_lookat="0.0,0.0,120.0" linkedscene_spot="spot2061438867" linkedscene_hoffset="358.3" use3dtransition="true" />
+		<hotspot name="info_optical_access_network" style="skin_infopoststyle" ath="90.0" atv="0.0" tooltip="Mô hình mạng truy nhập quang" onclick="js(showFptOpticalInfo());" />
 
 	</scene>
 

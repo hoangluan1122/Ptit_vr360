@@ -23,6 +23,19 @@
       .loading { position:fixed; z-index:50; inset:0; display:grid; place-items:center; background:#111216; color:#fff; transition:opacity .5s,visibility .5s; }
       .loading.done { opacity:0; visibility:hidden; pointer-events:none; }
       .loading-mark { display:grid; place-items:center; width:58px; height:58px; border-radius:16px; background:var(--red); font-size:14px; font-weight:800; }
+      .info-backdrop { position:fixed; z-index:80; inset:0; display:grid; place-items:center; padding:20px; background:rgba(8,10,14,.56); opacity:0; visibility:hidden; backdrop-filter:blur(10px); transition:opacity .2s,visibility .2s; }
+      .info-backdrop.open { opacity:1; visibility:visible; }
+      .info-card { position:relative; width:min(520px,100%); overflow:hidden; border:1px solid rgba(255,255,255,.16); border-radius:22px; background:linear-gradient(145deg,#fff,#f4f5f7); color:#17191f; box-shadow:0 28px 90px rgba(0,0,0,.36); transform:translateY(12px) scale(.98); transition:transform .22s ease; }
+      .info-backdrop.open .info-card { transform:none; }
+      .info-accent { height:7px; background:linear-gradient(90deg,#d71920,#ff5b62 55%,#f0a41b); }
+      .info-body { padding:28px; }
+      .info-kicker { margin:0 0 8px; color:#c8161d; font-size:10px; font-weight:800; letter-spacing:.14em; text-transform:uppercase; }
+      .info-card h1 { margin:0 44px 12px 0; font-size:27px; line-height:1.12; letter-spacing:-.035em; }
+      .info-card p { margin:0; color:#626a75; font-size:13px; line-height:1.7; }
+      .info-tags { display:flex; flex-wrap:wrap; gap:7px; margin-top:20px; }
+      .info-tags span { padding:7px 9px; border-radius:8px; background:#e9eaed; color:#555d68; font-size:10px; font-weight:700; }
+      .info-close { position:absolute; top:20px; right:20px; display:grid; place-items:center; width:36px; height:36px; padding:0; border:0; border-radius:10px; background:#e9eaed; color:#454b54; font-size:20px; cursor:pointer; }
+      .info-close:hover { background:#dfe1e5; }
       @media(max-width:620px){ .topbar{top:10px;right:10px;left:10px;height:58px}.logo{width:42px;height:42px}.brand span{display:none}.map-back span{display:none}.map-back{width:42px;padding:0;justify-content:center}.scene-status{max-width:125px;padding:9px 10px} }
     </style>
   </head>
@@ -47,10 +60,29 @@
       <button class="tour-tool" data-tour-action="vr" type="button" aria-label="Chế độ VR"><svg viewBox="0 0 24 24"><path d="M3 8.5h18v8H16l-2.2-3h-3.6L8 16.5H3z"/><circle cx="7" cy="12" r="1"/><circle cx="17" cy="12" r="1"/></svg></button>
       <button class="tour-tool" data-tour-action="fullscreen" type="button" aria-label="Toàn màn hình"><svg viewBox="0 0 24 24"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5"/></svg></button>
     </nav>
+    <div id="opticalInfo" class="info-backdrop" role="dialog" aria-modal="true" aria-labelledby="opticalInfoTitle">
+      <article class="info-card">
+        <div class="info-accent"></div>
+        <div class="info-body">
+          <button id="opticalInfoClose" class="info-close" type="button" aria-label="Đóng">×</button>
+          <p class="info-kicker">Thiết bị thực hành</p>
+          <h1 id="opticalInfoTitle">Mô hình mạng truy nhập quang</h1>
+          <p>Cụm mô hình minh họa mạng phân phối quang ODN và sơ đồ phối cáp ngoại vi. Sinh viên sử dụng hệ thống để nhận diện hộp cáp, cáp quang, bộ chia quang và thực hành quy trình đấu nối, kiểm tra đường truyền.</p>
+          <div class="info-tags"><span>Mạng ODN</span><span>Phối cáp ngoại vi</span><span>Đấu nối quang</span></div>
+        </div>
+      </article>
+    </div>
     <script src="tour.js"></script>
     <script>
       const names={scene_viettel2a_:"Hành lang",scene_fpt1:"Phòng FPT · Góc 1",scene_fpt2a:"Phòng FPT · Góc 2",scene_fpt3a:"Phòng FPT · Góc 3",scene_fpt4a:"Phòng FPT · Góc 4"};
       let lastScene="";
+      const opticalInfo=document.querySelector("#opticalInfo");
+      function showFptOpticalInfo(){opticalInfo.classList.add("open");}
+      function closeFptOpticalInfo(){opticalInfo.classList.remove("open");}
+      window.showFptOpticalInfo=showFptOpticalInfo;
+      document.querySelector("#opticalInfoClose").addEventListener("click",closeFptOpticalInfo);
+      opticalInfo.addEventListener("click",event=>{if(event.target===opticalInfo)closeFptOpticalInfo();});
+      document.addEventListener("keydown",event=>{if(event.key==="Escape")closeFptOpticalInfo();});
       embedpano({xml:"tour.xml",target:"pano",html5:"only",passQueryParameters:"startscene,startlookat",onready(instance){
         window.ptitKrpano=instance;
         instance.call("delayedcall(0.3, skin_hideskin(instant); set(layer[skin_btn_show].visible,false); );");

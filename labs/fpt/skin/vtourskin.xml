@@ -300,6 +300,23 @@
 		);
 	</action>
 
+	<!-- Information hotspots are visually distinct from scene-navigation hotspots. -->
+	<style name="skin_infopoststyle"
+	       url="infopost.svg"
+	       edge="center"
+	       distorted="false"
+	       width="96"
+	       height="96"
+	       scale="0.52"
+	       alpha="0.94"
+	       depth="1000"
+	       zorder="20"
+	       onover="stoptween(scale,alpha); tween(scale,0.64,0.18,easeOutBack); tween(alpha,1.0,0.18);"
+	       onout="stoptween(scale,alpha); tween(scale,0.52,0.22,easeOutQuad); tween(alpha,0.94,0.22);"
+	       ondown="tween(scale,0.46,0.1,easeOutQuad);"
+	       onup="tween(scale,0.64,0.14,easeOutBack);"
+	       />
+
 	<action name="skin_hotspotstyle_setup" scope="local">
 		if(isvalue(caller.linkedscene) AND skin_settings.tooltips_hotspots,
 			copy(caller.tooltip, scene[get(caller.linkedscene)].title);
