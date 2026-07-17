@@ -65,10 +65,10 @@
         <div class="info-accent"></div>
         <div class="info-body">
           <button id="opticalInfoClose" class="info-close" type="button" aria-label="Đóng">×</button>
-          <p class="info-kicker">Thiết bị thực hành</p>
-          <h1 id="opticalInfoTitle">Mô hình mạng truy nhập quang</h1>
-          <p>Cụm mô hình minh họa mạng phân phối quang ODN và sơ đồ phối cáp ngoại vi. Sinh viên sử dụng hệ thống để nhận diện hộp cáp, cáp quang, bộ chia quang và thực hành quy trình đấu nối, kiểm tra đường truyền.</p>
-          <div class="info-tags"><span>Mạng ODN</span><span>Phối cáp ngoại vi</span><span>Đấu nối quang</span></div>
+          <p id="opticalInfoKicker" class="info-kicker">Thiết bị thực hành</p>
+          <h1 id="opticalInfoTitle">Mô hình thiết bị mạng ODN</h1>
+          <p id="opticalInfoDescription">Mô hình giới thiệu các phần tử thụ động trên mạng phân phối quang, giúp sinh viên nhận diện thiết bị và thực hành đấu nối tuyến thuê bao.</p>
+          <div id="opticalInfoTags" class="info-tags"></div>
         </div>
       </article>
     </div>
@@ -77,9 +77,21 @@
       const names={scene_viettel2a_:"Hành lang",scene_fpt1:"Phòng FPT · Góc 1",scene_fpt2a:"Phòng FPT · Góc 2",scene_fpt3a:"Phòng FPT · Góc 3",scene_fpt4a:"Phòng FPT · Góc 4"};
       let lastScene="";
       const opticalInfo=document.querySelector("#opticalInfo");
-      function showFptOpticalInfo(){opticalInfo.classList.add("open");}
+      const opticalInfoContent={
+        odn:{title:"Mô hình thiết bị mạng ODN",description:"Mô hình giới thiệu các phần tử thụ động trên mạng phân phối quang như hộp cáp, bộ chia quang, cáp thuê bao và thiết bị đầu cuối. Sinh viên sử dụng mô hình để nhận diện thiết bị, tìm hiểu cấu trúc ODN và thực hành đấu nối tuyến thuê bao.",tags:["Mạng ODN","Bộ chia quang","Đấu nối thuê bao"]},
+        cabling:{title:"Sơ đồ phối cáp ngoại vi",description:"Mô hình minh họa cách tổ chức và phân phối tuyến cáp từ mạng chính đến các hộp cáp nhánh và điểm thuê bao. Qua đó, sinh viên thực hành đọc sơ đồ, xác định tuyến cáp và kiểm tra mối liên kết giữa các điểm phối cáp.",tags:["Cáp ngoại vi","Hộp cáp nhánh","Sơ đồ tuyến"]}
+      };
+      function showFptOpticalInfo(type="odn"){
+        const content=opticalInfoContent[type]||opticalInfoContent.odn;
+        document.querySelector("#opticalInfoTitle").textContent=content.title;
+        document.querySelector("#opticalInfoDescription").textContent=content.description;
+        document.querySelector("#opticalInfoTags").innerHTML=content.tags.map(tag=>`<span>${tag}</span>`).join("");
+        opticalInfo.classList.add("open");
+      }
       function closeFptOpticalInfo(){opticalInfo.classList.remove("open");}
       window.showFptOpticalInfo=showFptOpticalInfo;
+      window.showFptOdnInfo=()=>showFptOpticalInfo("odn");
+      window.showFptCablingInfo=()=>showFptOpticalInfo("cabling");
       document.querySelector("#opticalInfoClose").addEventListener("click",closeFptOpticalInfo);
       opticalInfo.addEventListener("click",event=>{if(event.target===opticalInfo)closeFptOpticalInfo();});
       document.addEventListener("keydown",event=>{if(event.key==="Escape")closeFptOpticalInfo();});
