@@ -34,8 +34,15 @@
       .info-card p { margin:0; color:#626a75; font-size:13px; line-height:1.7; }
       .info-tags { display:flex; flex-wrap:wrap; gap:7px; margin-top:20px; }
       .info-tags span { padding:7px 9px; border-radius:8px; background:#e9eaed; color:#555d68; font-size:10px; font-weight:700; }
+      .narration-badge { display:none; align-items:center; gap:8px; margin-top:18px; color:#9e141b; font-size:11px; font-weight:700; }
+      .narration-badge.visible { display:flex; }
+      .narration-wave { display:flex; align-items:center; gap:2px; height:14px; }
+      .narration-wave i { width:2px; height:6px; border-radius:2px; background:#d71920; animation:audio-wave .8s ease-in-out infinite alternate; }
+      .narration-wave i:nth-child(2) { height:12px; animation-delay:-.35s; }
+      .narration-wave i:nth-child(3) { height:9px; animation-delay:-.18s; }
       .info-close { position:absolute; top:20px; right:20px; display:grid; place-items:center; width:36px; height:36px; padding:0; border:0; border-radius:10px; background:#e9eaed; color:#454b54; font-size:20px; cursor:pointer; }
       .info-close:hover { background:#dfe1e5; }
+      @keyframes audio-wave { from { transform:scaleY(.55); } to { transform:scaleY(1.15); } }
       @media(max-width:620px){ .topbar{top:10px;right:10px;left:10px;height:58px}.logo{width:42px;height:42px}.brand span{display:none}.map-back span{display:none}.map-back{width:42px;padding:0;justify-content:center}.scene-status{max-width:125px;padding:9px 10px} }
     </style>
   </head>
@@ -69,6 +76,7 @@
           <h1 id="opticalInfoTitle">Mô hình thiết bị mạng ODN</h1>
           <p id="opticalInfoDescription">Mô hình giới thiệu các phần tử thụ động trên mạng phân phối quang, giúp sinh viên nhận diện thiết bị và thực hành đấu nối tuyến thuê bao.</p>
           <div id="opticalInfoTags" class="info-tags"></div>
+          <div id="opticalNarrationBadge" class="narration-badge"><span class="narration-wave"><i></i><i></i><i></i></span>Đang phát thuyết minh</div>
         </div>
       </article>
     </div>
@@ -81,14 +89,34 @@
         odn:{title:"Mô hình thiết bị mạng ODN",description:"Mô hình giới thiệu các phần tử thụ động trên mạng phân phối quang như hộp cáp, bộ chia quang, cáp thuê bao và thiết bị đầu cuối. Sinh viên sử dụng mô hình để nhận diện thiết bị, tìm hiểu cấu trúc ODN và thực hành đấu nối tuyến thuê bao.",tags:["Mạng ODN","Bộ chia quang","Đấu nối thuê bao"]},
         cabling:{title:"Sơ đồ phối cáp ngoại vi",description:"Mô hình minh họa cách tổ chức và phân phối tuyến cáp từ mạng chính đến các hộp cáp nhánh và điểm thuê bao. Qua đó, sinh viên thực hành đọc sơ đồ, xác định tuyến cáp và kiểm tra mối liên kết giữa các điểm phối cáp.",tags:["Cáp ngoại vi","Hộp cáp nhánh","Sơ đồ tuyến"]}
       };
+      const opticalNarrations={odn:new Audio("audio/fpt-odn-equipment.mp3"),cabling:new Audio("audio/fpt-external-cabling.mp3")};
+      Object.values(opticalNarrations).forEach(audio=>audio.preload="auto");
+      let activeOpticalNarration=null;
+      function stopFptOpticalNarration(){
+        if(!activeOpticalNarration)return;
+        activeOpticalNarration.pause();
+        activeOpticalNarration.currentTime=0;
+        activeOpticalNarration=null;
+        document.querySelector("#opticalNarrationBadge").classList.remove("visible");
+        window.dispatchEvent(new CustomEvent("ptit:narrationend"));
+      }
       function showFptOpticalInfo(type="odn"){
+        stopFptOpticalNarration();
         const content=opticalInfoContent[type]||opticalInfoContent.odn;
         document.querySelector("#opticalInfoTitle").textContent=content.title;
         document.querySelector("#opticalInfoDescription").textContent=content.description;
         document.querySelector("#opticalInfoTags").innerHTML=content.tags.map(tag=>`<span>${tag}</span>`).join("");
         opticalInfo.classList.add("open");
+        activeOpticalNarration=opticalNarrations[type]||opticalNarrations.odn;
+        activeOpticalNarration.currentTime=0;
+        document.querySelector("#opticalNarrationBadge").classList.add("visible");
+        window.dispatchEvent(new CustomEvent("ptit:narrationstart"));
+        activeOpticalNarration.play().catch(()=>stopFptOpticalNarration());
       }
-      function closeFptOpticalInfo(){opticalInfo.classList.remove("open");}
+      Object.values(opticalNarrations).forEach(audio=>audio.addEventListener("ended",()=>{
+        if(activeOpticalNarration===audio){activeOpticalNarration=null;document.querySelector("#opticalNarrationBadge").classList.remove("visible");window.dispatchEvent(new CustomEvent("ptit:narrationend"));}
+      }));
+      function closeFptOpticalInfo(){opticalInfo.classList.remove("open");stopFptOpticalNarration();}
       window.showFptOpticalInfo=showFptOpticalInfo;
       window.showFptOdnInfo=()=>showFptOpticalInfo("odn");
       window.showFptCablingInfo=()=>showFptOpticalInfo("cabling");
