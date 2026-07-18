@@ -37,9 +37,10 @@
       .loading.compact .loading-percent { margin-top:7px; font-size:10px; }
       .info-backdrop { position:fixed; z-index:80; inset:0; display:grid; place-items:center; padding:20px; background:rgba(8,10,14,.56); opacity:0; visibility:hidden; backdrop-filter:blur(10px); transition:opacity .2s,visibility .2s; }
       .info-backdrop.open { opacity:1; visibility:visible; }
-      .info-card { position:relative; width:min(520px,100%); overflow:hidden; border:1px solid rgba(255,255,255,.16); border-radius:22px; background:linear-gradient(145deg,#fff,#f4f5f7); color:#17191f; box-shadow:0 28px 90px rgba(0,0,0,.36); transform:translateY(12px) scale(.98); transition:transform .22s ease; }
+      .info-card { position:relative; width:min(620px,100%); max-height:calc(100dvh - 40px); overflow:auto; border:1px solid rgba(255,255,255,.16); border-radius:22px; background:linear-gradient(145deg,#fff,#f4f5f7); color:#17191f; box-shadow:0 28px 90px rgba(0,0,0,.36); transform:translateY(12px) scale(.98); transition:transform .22s ease; }
       .info-backdrop.open .info-card { transform:none; }
       .info-accent { height:7px; background:linear-gradient(90deg,#d71920,#ff5b62 55%,#f0a41b); }
+      .info-image { display:block; width:100%; aspect-ratio:16/9; object-fit:cover; background:#e5e7ea; }
       .info-body { padding:28px; }
       .info-kicker { margin:0 0 8px; color:#c8161d; font-size:10px; font-weight:800; letter-spacing:.14em; text-transform:uppercase; }
       .info-card h1 { margin:0 44px 12px 0; font-size:27px; line-height:1.12; letter-spacing:-.035em; }
@@ -89,6 +90,7 @@
     <div id="opticalInfo" class="info-backdrop" role="dialog" aria-modal="true" aria-labelledby="opticalInfoTitle">
       <article class="info-card">
         <div class="info-accent"></div>
+        <img id="opticalInfoImage" class="info-image" src="assets/fpt-odn-equipment.jpeg" alt="Mô hình thiết bị mạng ODN" loading="lazy" decoding="async" />
         <div class="info-body">
           <button id="opticalInfoClose" class="info-close" type="button" aria-label="Đóng">×</button>
           <p id="opticalInfoKicker" class="info-kicker">Thiết bị thực hành</p>
@@ -106,8 +108,8 @@
       let lastScene="";
       const opticalInfo=document.querySelector("#opticalInfo");
       const opticalInfoContent={
-        odn:{title:"Mô hình thiết bị mạng ODN",description:"Mô hình giới thiệu các phần tử thụ động trên mạng phân phối quang như hộp cáp, bộ chia quang, cáp thuê bao và thiết bị đầu cuối. Sinh viên sử dụng mô hình để nhận diện thiết bị, tìm hiểu cấu trúc ODN và thực hành đấu nối tuyến thuê bao.",tags:["Mạng ODN","Bộ chia quang","Đấu nối thuê bao"]},
-        cabling:{title:"Sơ đồ phối cáp ngoại vi",description:"Mô hình minh họa cách tổ chức và phân phối tuyến cáp từ mạng chính đến các hộp cáp nhánh và điểm thuê bao. Qua đó, sinh viên thực hành đọc sơ đồ, xác định tuyến cáp và kiểm tra mối liên kết giữa các điểm phối cáp.",tags:["Cáp ngoại vi","Hộp cáp nhánh","Sơ đồ tuyến"]}
+        odn:{title:"Mô hình thiết bị mạng ODN",image:"assets/fpt-odn-equipment.jpeg",alt:"Mô hình thiết bị mạng ODN gồm hộp cáp, bộ chia quang và cáp thuê bao",description:"Mô hình giới thiệu các phần tử thụ động trên mạng phân phối quang như hộp cáp, bộ chia quang, cáp thuê bao và thiết bị đầu cuối. Sinh viên sử dụng mô hình để nhận diện thiết bị, tìm hiểu cấu trúc ODN và thực hành đấu nối tuyến thuê bao.",tags:["Mạng ODN","Bộ chia quang","Đấu nối thuê bao"]},
+        cabling:{title:"Sơ đồ phối cáp ngoại vi",image:"assets/fpt-external-cabling.jpeg",alt:"Sơ đồ phối cáp ngoại vi với các hộp cáp và tuyến cáp quang",description:"Mô hình minh họa cách tổ chức và phân phối tuyến cáp từ mạng chính đến các hộp cáp nhánh và điểm thuê bao. Qua đó, sinh viên thực hành đọc sơ đồ, xác định tuyến cáp và kiểm tra mối liên kết giữa các điểm phối cáp.",tags:["Cáp ngoại vi","Hộp cáp nhánh","Sơ đồ tuyến"]}
       };
       const opticalNarrations={odn:new Audio("audio/fpt-odn-equipment.mp3"),cabling:new Audio("audio/fpt-external-cabling.mp3")};
       Object.values(opticalNarrations).forEach(audio=>audio.preload="auto");
@@ -123,6 +125,8 @@
       function showFptOpticalInfo(type="odn"){
         stopFptOpticalNarration();
         const content=opticalInfoContent[type]||opticalInfoContent.odn;
+        document.querySelector("#opticalInfoImage").src=content.image;
+        document.querySelector("#opticalInfoImage").alt=content.alt;
         document.querySelector("#opticalInfoTitle").textContent=content.title;
         document.querySelector("#opticalInfoDescription").textContent=content.description;
         document.querySelector("#opticalInfoTags").innerHTML=content.tags.map(tag=>`<span>${tag}</span>`).join("");
