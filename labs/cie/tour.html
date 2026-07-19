@@ -329,6 +329,7 @@
         document.querySelector("#infoModal .modal-card p:last-of-type").textContent =
           "Đầu mối hỗ trợ, quản lý và cung cấp thông tin dành cho lưu học sinh đang học tập tại Học viện.";
         document.querySelector("#infoModal").classList.add("open");
+        if (window.ptitAudioAllowed && !window.ptitAudioAllowed()) return;
         document.querySelector("#narrationBadge").classList.add("visible");
         studentNarration.currentTime = 0;
         window.dispatchEvent(new CustomEvent("ptit:narrationstart"));
@@ -386,7 +387,7 @@
         if (event.key === "Escape") { modal.classList.remove("open"); stopStudentNarration(); }
       });
     </script>
-    <script src="../../assets/audio/background-music.js"></script>
+    <script src="../../assets/audio/background-music.js?v=2"></script>
     <script src="../../assets/tour-controls.js?v=2"></script>
     <script>
       window.PTIT_TOUR_NAV_CONFIG = {

@@ -132,6 +132,7 @@
         document.querySelector("#opticalInfoDescription").textContent=content.description;
         document.querySelector("#opticalInfoTags").innerHTML=content.tags.map(tag=>`<span>${tag}</span>`).join("");
         opticalInfo.classList.add("open");
+        if(window.ptitAudioAllowed&&!window.ptitAudioAllowed())return;
         activeOpticalNarration=opticalNarrations[type]||opticalNarrations.odn;
         activeOpticalNarration.currentTime=0;
         document.querySelector("#opticalNarrationBadge").classList.add("visible");
@@ -156,7 +157,7 @@
         setInterval(()=>{const scene=instance.get("xml.scene")||"";if(scene&&scene!==lastScene){lastScene=scene;document.querySelector("#sceneTitle").textContent=names[scene]||"Phòng lab FPT";}},350);
       }});
     </script>
-    <script src="../../assets/audio/background-music.js"></script>
+    <script src="../../assets/audio/background-music.js?v=2"></script>
     <script src="../../assets/tour-controls.js?v=2"></script>
     <script>
       window.PTIT_TOUR_NAV_CONFIG = {

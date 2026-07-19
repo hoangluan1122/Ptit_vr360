@@ -79,6 +79,7 @@
   function speakStep(step) {
     stopSpeech();
     window.dispatchEvent(new CustomEvent("ptit:stop-infopost-narration"));
+    if (window.ptitAudioAllowed && !window.ptitAudioAllowed()) return;
     if (step.audio) {
       speechTimer = setTimeout(() => {
         guideAudio = new Audio(step.audio);
