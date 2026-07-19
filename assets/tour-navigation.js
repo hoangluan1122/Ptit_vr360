@@ -62,18 +62,42 @@
     renderFloor();
   }
 
+  let guideAudio = null;
+
   function stopSpeech() {
     clearTimeout(speechTimer);
     if ("speechSynthesis" in window) speechSynthesis.cancel();
+    if (guideAudio) {
+      guideAudio.pause();
+      guideAudio.currentTime = 0;
+      guideAudio = null;
+    }
     guide.querySelector(".guided-speaking").classList.remove("visible");
     window.dispatchEvent(new CustomEvent("ptit:narrationend"));
   }
 
   function speakStep(step) {
     stopSpeech();
-    if (!("speechSynthesis" in window) || !step.narration) return;
+    if (step.audio) {
+      speechTimer = setTimeout(() => {
+        guideAudio = new Audio(step.audio);
+        guideAudio.preload = "auto";
+        guideAudio.onplay = () => { guide.querySelector(".guided-speaking").classList.add("visible"); window.dispatchEvent(new CustomEvent("ptit:narrationstart")); };
+        guideAudio.onended = guideAudio.onerror = () => { guide.querySelector(".guided-speaking").classList.remove("visible"); guideAudio = null; window.dispatchEvent(new CustomEvent("ptit:narrationend")); };
+        guideAudio.play().catch(() => {
+          guideAudio = null;
+          if (step.narration) speakText(step.narration);
+        });
+      }, 850);
+      return;
+    }
+    speakText(step.narration);
+  }
+
+  function speakText(narration) {
+    if (!("speechSynthesis" in window) || !narration) return;
     speechTimer = setTimeout(() => {
-      const utterance = new SpeechSynthesisUtterance(step.narration);
+      const utterance = new SpeechSynthesisUtterance(narration);
       utterance.lang = "vi-VN";
       utterance.rate = .95;
       utterance.onstart = () => { guide.querySelector(".guided-speaking").classList.add("visible"); window.dispatchEvent(new CustomEvent("ptit:narrationstart")); };
