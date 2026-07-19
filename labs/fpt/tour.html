@@ -123,6 +123,7 @@
         window.dispatchEvent(new CustomEvent("ptit:narrationend"));
       }
       function showFptOpticalInfo(type="odn"){
+        window.dispatchEvent(new CustomEvent("ptit:stop-guided-narration"));
         stopFptOpticalNarration();
         const content=opticalInfoContent[type]||opticalInfoContent.odn;
         document.querySelector("#opticalInfoImage").src=content.image;
@@ -141,6 +142,7 @@
         if(activeOpticalNarration===audio){activeOpticalNarration=null;document.querySelector("#opticalNarrationBadge").classList.remove("visible");window.dispatchEvent(new CustomEvent("ptit:narrationend"));}
       }));
       function closeFptOpticalInfo(){opticalInfo.classList.remove("open");stopFptOpticalNarration();}
+      window.addEventListener("ptit:stop-infopost-narration",closeFptOpticalInfo);
       window.showFptOpticalInfo=showFptOpticalInfo;
       window.showFptOdnInfo=()=>showFptOpticalInfo("odn");
       window.showFptCablingInfo=()=>showFptOpticalInfo("cabling");

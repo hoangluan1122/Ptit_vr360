@@ -78,6 +78,7 @@
 
   function speakStep(step) {
     stopSpeech();
+    window.dispatchEvent(new CustomEvent("ptit:stop-infopost-narration"));
     if (step.audio) {
       speechTimer = setTimeout(() => {
         guideAudio = new Audio(step.audio);
@@ -121,6 +122,8 @@
   function startGuide() {
     guideIndex = 0; guideOpen = true; guide.classList.add("open"); mapPanel.classList.remove("open"); renderGuide();
   }
+
+  window.addEventListener("ptit:stop-guided-narration", stopSpeech);
   function closeGuide() { guideOpen = false; guide.classList.remove("open"); stopSpeech(); }
 
   floorTabs.addEventListener("click", (event) => { const button = event.target.closest("[data-floor]"); if (button) { activeFloor = button.dataset.floor; renderFloor(); } });
