@@ -323,6 +323,7 @@
       }
 
       function showCieStudentInfo() {
+        window.dispatchEvent(new CustomEvent("ptit:stop-guided-narration"));
         document.querySelector("#infoImage").hidden = false;
         document.querySelector("#infoTitle").textContent = "Bộ phận Quản lý lưu học sinh";
         document.querySelector("#infoModal .modal-card p:last-of-type").textContent =
@@ -377,6 +378,7 @@
         modal.classList.add("open");
       });
       document.querySelector("#closeInfo").addEventListener("click", () => { modal.classList.remove("open"); stopStudentNarration(); });
+      window.addEventListener("ptit:stop-infopost-narration", () => { modal.classList.remove("open"); stopStudentNarration(); });
       modal.addEventListener("click", (event) => {
         if (event.target === modal) { modal.classList.remove("open"); stopStudentNarration(); }
       });
