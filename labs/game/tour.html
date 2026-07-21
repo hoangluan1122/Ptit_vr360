@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#111216" />
+    <title>PTIT Game Lab Virtual Tour</title>
+    <link rel="stylesheet" href="../../assets/tour-controls.css?v=2" />
+    <link rel="stylesheet" href="../../assets/tour-navigation.css?v=1" />
+    <style>
+      :root { --red:#d71920; --glass:rgba(17,18,22,.76); font-family:Inter,"Segoe UI",Arial,sans-serif; }
+      * { box-sizing:border-box; }
+      html,body,#pano { width:100%; height:100%; margin:0; overflow:hidden; background:#111216; }
+      .topbar { position:fixed; z-index:20; top:18px; right:18px; left:18px; height:64px; display:flex; align-items:center; gap:12px; padding:8px 10px; border:1px solid rgba(255,255,255,.16); border-radius:17px; background:var(--glass); color:#fff; box-shadow:0 16px 44px rgba(0,0,0,.22); backdrop-filter:blur(18px); }
+      .map-back { display:inline-flex; align-items:center; gap:7px; height:42px; padding:0 12px; border-radius:10px; background:rgba(255,255,255,.09); color:rgba(255,255,255,.84); font-size:11px; font-weight:650; text-decoration:none; }
+      .map-back:hover { background:rgba(255,255,255,.15); }
+      .logo { display:grid; place-items:center; width:46px; height:46px; flex:0 0 auto; border-radius:12px; background:var(--red); font-size:12px; font-weight:800; }
+      .brand { min-width:0; }
+      .brand strong,.brand span { display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+      .brand strong { font-size:14px; }
+      .brand span { margin-top:3px; color:rgba(255,255,255,.58); font-size:11px; }
+      .scene-status { min-width:0; display:flex; align-items:center; gap:9px; margin-left:auto; padding:10px 13px; border-radius:11px; background:rgba(255,255,255,.09); color:rgba(255,255,255,.84); font-size:12px; }
+      .status-dot { width:7px; height:7px; border-radius:50%; background:#ff5961; box-shadow:0 0 0 4px rgba(255,89,97,.14); }
+      .loading { position:fixed; z-index:50; inset:0; display:grid; place-items:center; background:#111216; color:#fff; transition:opacity .5s,visibility .5s,background .25s; }
+      .loading.preview-ready { background:rgba(17,18,22,.18); }
+      .loading.done { opacity:0; visibility:hidden; pointer-events:none; }
+      .loading-inner { width:min(280px,calc(100vw - 48px)); text-align:center; }
+      .loading-mark { display:grid; place-items:center; width:58px; height:58px; margin:0 auto 22px; border-radius:16px; background:var(--red); font-size:14px; font-weight:800; }
+      .loading-title { margin:0 0 18px; font-size:13px; font-weight:600; letter-spacing:.04em; }
+      .loading-track { height:2px; overflow:hidden; border-radius:2px; background:rgba(255,255,255,.12); }
+      .loading-bar { width:0; height:100%; background:#ff5a62; transition:width .22s ease; }
+      .loading-percent { display:block; margin-top:10px; color:rgba(255,255,255,.72); font-size:11px; font-variant-numeric:tabular-nums; }
+      .loading.compact { align-items:end; padding-bottom:82px; background:transparent; pointer-events:none; }
+      .loading.compact .loading-inner { width:220px; padding:12px 14px; border:1px solid rgba(255,255,255,.14); border-radius:12px; background:rgba(17,18,22,.76); box-shadow:0 10px 30px rgba(0,0,0,.24); backdrop-filter:blur(14px); }
+      .loading.compact .loading-mark { display:none; }
+      .loading.compact .loading-title { margin-bottom:10px; font-size:11px; }
+      .loading.compact .loading-percent { margin-top:7px; font-size:10px; }
+      .info-backdrop { position:fixed; z-index:80; inset:0; display:grid; place-items:center; padding:20px; background:rgba(8,10,14,.56); opacity:0; visibility:hidden; backdrop-filter:blur(10px); transition:opacity .2s,visibility .2s; }
+      .info-backdrop.open { opacity:1; visibility:visible; }
+      .info-card { position:relative; width:min(590px,100%); max-height:calc(100dvh - 40px); overflow:auto; border:1px solid rgba(255,255,255,.16); border-radius:22px; background:linear-gradient(145deg,#fff,#f4f5f7); color:#17191f; box-shadow:0 28px 90px rgba(0,0,0,.36); transform:translateY(12px) scale(.98); transition:transform .22s ease; }
+      .info-backdrop.open .info-card { transform:none; }
+      .info-image { display:block; width:100%; aspect-ratio:16/9; object-fit:cover; background:#e5e7ea; }
+      .info-body { padding:27px; }
+      .info-kicker { margin:0 0 8px; color:#c8161d; font-size:10px; font-weight:800; letter-spacing:.14em; text-transform:uppercase; }
+      .info-card h1 { margin:0 44px 12px 0; font-size:27px; line-height:1.12; letter-spacing:-.035em; }
+      .info-card p { margin:0; color:#626a75; font-size:13px; line-height:1.7; }
+      .info-tags { display:flex; flex-wrap:wrap; gap:7px; margin-top:20px; }
+      .info-tags span { padding:7px 9px; border-radius:8px; background:#e9eaed; color:#555d68; font-size:10px; font-weight:700; }
+      .info-close { position:absolute; top:18px; right:18px; display:grid; place-items:center; width:36px; height:36px; padding:0; border:0; border-radius:10px; background:#e9eaed; color:#454b54; font-size:20px; cursor:pointer; }
+      @media(max-width:620px){ .topbar{top:10px;right:10px;left:10px;height:58px}.logo{width:42px;height:42px}.brand span{display:none}.map-back span{display:none}.map-back{width:42px;padding:0;justify-content:center}.scene-status{max-width:130px;padding:9px 10px} }
+    </style>
+  </head>
+  <body>
+    <div id="pano"></div>
+    <div id="loading" class="loading" role="progressbar" aria-live="polite" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+      <div class="loading-inner">
+        <div class="loading-mark">PTIT</div>
+        <p class="loading-title">Đang mở không gian Game Lab</p>
+        <div class="loading-track"><div class="loading-bar"></div></div>
+        <span class="loading-percent">0%</span>
+      </div>
+    </div>
+    <header class="topbar">
+      <a class="map-back" href="../../index.html" aria-label="Quay lại bản đồ"><b>←</b><span>Bản đồ</span></a>
+      <div class="logo" aria-hidden="true">PTIT</div>
+      <div class="brand"><strong>Game Lab Virtual Tour</strong><span>Học viện Công nghệ Bưu chính Viễn thông</span></div>
+      <div class="scene-status"><span class="status-dot"></span><span id="sceneTitle">Game Lab</span></div>
+    </header>
+    <nav class="tour-tools" aria-label="Thanh công cụ tham quan">
+      <button class="tour-tool" data-tour-action="left" type="button" aria-label="Xoay trái">←</button>
+      <button class="tour-tool" data-tour-action="right" type="button" aria-label="Xoay phải">→</button>
+      <button class="tour-tool" data-tour-action="up" type="button" aria-label="Nhìn lên">↑</button>
+      <button class="tour-tool" data-tour-action="down" type="button" aria-label="Nhìn xuống">↓</button>
+      <span class="tour-tool-separator"></span>
+      <button class="tour-tool" data-tour-action="zoom-in" type="button" aria-label="Phóng to">+</button>
+      <button class="tour-tool" data-tour-action="zoom-out" type="button" aria-label="Thu nhỏ">−</button>
+      <span class="tour-tool-separator"></span>
+      <button class="tour-tool" data-tour-action="vr" type="button" aria-label="Chế độ VR"><svg viewBox="0 0 24 24"><path d="M3 8.5h18v8H16l-2.2-3h-3.6L8 16.5H3z"/><circle cx="7" cy="12" r="1"/><circle cx="17" cy="12" r="1"/></svg></button>
+      <button class="tour-tool" data-tour-action="fullscreen" type="button" aria-label="Toàn màn hình"><svg viewBox="0 0 24 24"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5"/></svg></button>
+    </nav>
+    <div id="gameInfo" class="info-backdrop" role="dialog" aria-modal="true" aria-labelledby="gameInfoTitle">
+      <article class="info-card">
+        <img class="info-image" src="panos/Game_4.tiles/preview.jpg" alt="Không gian máy tính tại Game Lab" loading="lazy" decoding="async" />
+        <div class="info-body">
+          <button id="gameInfoClose" class="info-close" type="button" aria-label="Đóng">×</button>
+          <p class="info-kicker">Không gian thực hành</p>
+          <h1 id="gameInfoTitle">PTIT Game Lab</h1>
+          <p>Không gian được bố trí theo mô hình phòng máy, phục vụ học tập, thực hành và phát triển các sản phẩm liên quan đến trò chơi số. Các góc quan sát giúp người xem khám phá khu vực máy tính, bàn giảng và cách tổ chức phòng lab.</p>
+          <div class="info-tags"><span>Game Lab</span><span>Máy tính</span><span>Thực hành</span></div>
+        </div>
+      </article>
+    </div>
+    <script src="../../assets/tour-loading.js?v=1"></script>
+    <script src="tour.js"></script>
+    <script>
+      const names={scene_game_0l:"Hành lang trước Game Lab",scene_game_1l:"Lối vào Game Lab",scene_game_2:"Khu máy tính · Góc trái",scene_game_3:"Không gian trung tâm",scene_game_4:"Khu máy tính · Góc phải",scene_game_5:"Khu thực hành phía trong",scene_game_6:"Cuối phòng Game Lab"};
+      let lastScene="";
+      const gameInfo=document.querySelector("#gameInfo");
+      function showGameLabInfo(){window.dispatchEvent(new CustomEvent("ptit:stop-guided-narration"));gameInfo.classList.add("open");}
+      function closeGameLabInfo(){gameInfo.classList.remove("open");}
+      window.showGameLabInfo=showGameLabInfo;
+      window.addEventListener("ptit:stop-infopost-narration",closeGameLabInfo);
+      document.querySelector("#gameInfoClose").addEventListener("click",closeGameLabInfo);
+      gameInfo.addEventListener("click",event=>{if(event.target===gameInfo)closeGameLabInfo();});
+      document.addEventListener("keydown",event=>{if(event.key==="Escape")closeGameLabInfo();});
+      embedpano({xml:"tour.xml",target:"pano",html5:"only",passQueryParameters:"startscene,startlookat",onready(instance){
+        window.ptitKrpano=instance;
+        window.ptitAttachTourLoader?.(instance);
+        instance.call("delayedcall(0.3, skin_hideskin(instant); set(layer[skin_btn_show].visible,false); );");
+        setInterval(()=>{const scene=instance.get("xml.scene")||"";if(scene&&scene!==lastScene){lastScene=scene;document.querySelector("#sceneTitle").textContent=names[scene]||"Game Lab";}},350);
+      }});
+    </script>
+    <script src="../../assets/audio/background-music.js?v=2"></script>
+    <script src="../../assets/tour-controls.js?v=2"></script>
+    <script>
+      window.PTIT_TOUR_NAV_CONFIG={
+        title:"Sơ đồ PTIT Game Lab",
+        floors:[{
+          id:"game",label:"Phòng Game Lab",
+          nodes:[
+            {id:"g0",label:"Hành lang",short:"Hành lang",scene:"scene_game_0l",type:"entrance",x:8,y:52},
+            {id:"g1",label:"Lối vào",short:"Lối vào",scene:"scene_game_1l",type:"lab",x:25,y:52},
+            {id:"g2",label:"Góc trái",short:"Góc trái",scene:"scene_game_2",type:"lab",x:43,y:20},
+            {id:"g3",label:"Trung tâm",short:"Trung tâm",scene:"scene_game_3",type:"lab",x:43,y:52},
+            {id:"g4",label:"Góc phải",short:"Góc phải",scene:"scene_game_4",type:"lab",x:62,y:20},
+            {id:"g5",label:"Phía trong",short:"Phía trong",scene:"scene_game_5",type:"lab",x:62,y:70},
+            {id:"g6",label:"Cuối phòng",short:"Cuối phòng",scene:"scene_game_6",type:"lab",x:84,y:70}
+          ],
+          edges:[["g0","g1"],["g1","g2"],["g1","g3"],["g3","g4"],["g3","g5"],["g5","g6"]]
+        }],
+        guided:[
+          {scene:"scene_game_0l",lookat:[0,0,105],title:"Chào mừng đến với Game Lab",description:"Bắt đầu hành trình từ hành lang phía trước phòng lab.",narration:"Xin chào! Chào mừng bạn đến với chuyến tham quan thực tế ảo PTIT Game Lab. Trong hành trình này, chúng ta sẽ khám phá không gian học tập, hệ thống máy tính và các khu vực thực hành bên trong phòng lab."},
+          {scene:"scene_game_1l",lookat:[0,0,105],title:"Lối vào Game Lab",description:"Vị trí chuyển tiếp từ hành lang vào không gian thực hành.",narration:"Bạn đang ở lối vào PTIT Game Lab. Từ đây, bạn có thể quan sát cách bố trí tổng thể của phòng và di chuyển đến các khu vực máy tính ở hai bên."},
+          {scene:"scene_game_2",lookat:[0,0,105],title:"Khu máy tính bên trái",description:"Một góc quan sát của hệ thống máy tính phục vụ thực hành.",narration:"Đây là khu vực máy tính bên trái của phòng lab. Các máy được bố trí thành từng dãy, tạo điều kiện cho sinh viên học tập, thực hành và phối hợp làm việc theo nhóm."},
+          {scene:"scene_game_3",lookat:[0,0,105],title:"Không gian trung tâm",description:"Điểm quan sát chính kết nối các khu vực trong Game Lab.",narration:"Bạn đang ở khu vực trung tâm của Game Lab. Từ vị trí này, có thể quan sát toàn bộ hệ thống máy tính, khu vực giảng dạy và những lối di chuyển chính trong phòng."},
+          {scene:"scene_game_4",lookat:[0,0,105],title:"Khu máy tính bên phải",description:"Không gian máy tính và nhận diện ALCON Game Lab.",narration:"Tiếp theo là khu vực máy tính bên phải. Không gian được thiết kế đồng bộ với màu sắc nhận diện của Game Lab và bố trí thiết bị theo hướng thuận tiện cho việc hướng dẫn thực hành."},
+          {scene:"scene_game_5",lookat:[0,0,105],title:"Khu thực hành phía trong",description:"Khu vực học tập nằm sâu hơn bên trong phòng lab.",narration:"Chúng ta đang tiến vào khu vực thực hành phía trong. Đây là nơi sinh viên tiếp tục làm việc trên hệ thống máy tính và triển khai các bài tập hoặc dự án liên quan đến trò chơi số."},
+          {scene:"scene_game_6",lookat:[0,0,105],title:"Cuối phòng Game Lab",description:"Điểm quan sát cuối của tuyến tham quan.",narration:"Bạn đang ở điểm cuối của phòng Game Lab. Từ đây, bạn có thể nhìn lại toàn bộ không gian, các dãy máy tính và cách tổ chức khu vực học tập trong phòng."},
+          {scene:"scene_game_6",lookat:[180,0,105],title:"Kết thúc chuyến tham quan",description:"Tiếp tục khám phá tự do hoặc quay lại bản đồ PTIT.",narration:"Chuyến tham quan PTIT Game Lab xin được khép lại tại đây. Hy vọng hành trình đã giúp bạn hiểu rõ hơn về không gian học tập và thực hành của phòng lab. Cảm ơn bạn đã tham quan và hẹn gặp lại!"}
+        ]
+      };
+    </script>
+    <script src="../../assets/tour-navigation.js?v=1"></script>
+  </body>
+</html>

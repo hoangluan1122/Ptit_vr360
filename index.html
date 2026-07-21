@@ -102,6 +102,7 @@
       }
 
       #fptHotspot { left: 55%; top: 42.5%; }
+      #gameHotspot { left: 43%; top: 29%; }
 
       .hotspot-ring, .hotspot-core { position: absolute; inset: 0; border-radius: 50%; }
       .hotspot-ring { background: rgba(215,25,32,.2); animation: pulse 2s ease-out infinite; }
@@ -138,6 +139,7 @@
       .place-card { position: relative; width: min(430px, 100%); overflow: hidden; border: 1px solid rgba(255,255,255,.75); border-radius: 22px; background: #fff; box-shadow: 0 28px 80px rgba(0,0,0,.28); }
       .place-image { height: 190px; background: url("labs/cie/panos/Cie_CuaTruoc_e.tiles/preview.jpg") center / cover; }
       .place-image.fpt { background-image: url("labs/fpt/panos/fpt1.tiles/preview.jpg"); }
+      .place-image.game { background-image: url("labs/game/panos/Game_1l.tiles/preview.jpg"); }
       .place-content { padding: 26px; }
       .kicker { margin: 0 0 7px; color: var(--red); font-size: 10px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
       .place-card h1 { margin: 0 0 10px; font-size: 27px; letter-spacing: -.045em; }
@@ -191,6 +193,11 @@
             <span class="hotspot-core"></span>
             <span class="hotspot-label">Phòng lab FPT</span>
           </button>
+          <button id="gameHotspot" class="hotspot" type="button" aria-label="Mở thông tin PTIT Game Lab">
+            <span class="hotspot-ring"></span>
+            <span class="hotspot-core"></span>
+            <span class="hotspot-label">PTIT Game Lab</span>
+          </button>
         </div>
       </div>
 
@@ -201,7 +208,7 @@
           <span>Khám phá không gian học tập tại PTIT</span>
         </div>
         <button id="directoryToggle" class="directory-toggle" type="button" aria-expanded="false" aria-controls="placeDirectory">Địa điểm</button>
-        <span class="tour-count">02 địa điểm</span>
+        <span class="tour-count">03 địa điểm</span>
       </header>
 
       <aside id="placeDirectory" class="place-directory" aria-label="Danh sách địa điểm" aria-hidden="true">
@@ -231,6 +238,12 @@
             <a class="directory-item" data-directory-item data-search="fpt hành lang cửa vào" href="labs/fpt/tour.html?startscene=scene_viettel2a_"><span class="directory-thumb" style="background-image:url('labs/fpt/panos/viettel2a_.tiles/thumb.jpg')"></span><span class="directory-copy"><strong>Hành lang trước lab</strong><span>Lối vào phòng FPT</span></span><span class="directory-arrow">›</span></a>
             <a class="directory-item" data-directory-item data-search="fpt phòng lab góc 1" href="labs/fpt/tour.html?startscene=scene_fpt1"><span class="directory-thumb" style="background-image:url('labs/fpt/panos/fpt1.tiles/thumb.jpg')"></span><span class="directory-copy"><strong>Phòng lab FPT</strong><span>Góc quan sát 1</span></span><span class="directory-arrow">›</span></a>
             <a class="directory-item" data-directory-item data-search="fpt phòng lab góc 2" href="labs/fpt/tour.html?startscene=scene_fpt2a"><span class="directory-thumb" style="background-image:url('labs/fpt/panos/fpt2a.tiles/thumb.jpg')"></span><span class="directory-copy"><strong>Phòng lab FPT</strong><span>Góc quan sát 2</span></span><span class="directory-arrow">›</span></a>
+          </section>
+          <section class="directory-group" data-directory-group>
+            <h2 class="directory-group-title">PTIT Game Lab</h2>
+            <a class="directory-item" data-directory-item data-search="game lab hành lang lối vào" href="labs/game/tour.html?startscene=scene_game_0l"><span class="directory-thumb" style="background-image:url('labs/game/panos/Game_0l.tiles/thumb.jpg')"></span><span class="directory-copy"><strong>Hành lang Game Lab</strong><span>Lối vào phòng lab</span></span><span class="directory-arrow">›</span></a>
+            <a class="directory-item" data-directory-item data-search="game lab phòng máy trung tâm" href="labs/game/tour.html?startscene=scene_game_3"><span class="directory-thumb" style="background-image:url('labs/game/panos/Game_3.tiles/thumb.jpg')"></span><span class="directory-copy"><strong>Không gian trung tâm</strong><span>PTIT Game Lab</span></span><span class="directory-arrow">›</span></a>
+            <a class="directory-item" data-directory-item data-search="game lab máy tính phía trong" href="labs/game/tour.html?startscene=scene_game_6"><span class="directory-thumb" style="background-image:url('labs/game/panos/Game_6.tiles/thumb.jpg')"></span><span class="directory-copy"><strong>Khu thực hành phía trong</strong><span>Cuối phòng Game Lab</span></span><span class="directory-arrow">›</span></a>
           </section>
           <p id="directoryEmpty" class="directory-empty">Không tìm thấy địa điểm phù hợp.</p>
         </div>
@@ -271,6 +284,21 @@
           </div>
         </article>
       </div>
+      <div id="gameBackdrop" class="backdrop" role="dialog" aria-modal="true" aria-labelledby="gamePlaceTitle">
+        <article class="place-card">
+          <div class="place-image game"></div>
+          <div class="place-content">
+            <p class="kicker">PTIT Virtual Tour</p>
+            <h1 id="gamePlaceTitle">PTIT Game Lab</h1>
+            <p>Khám phá không gian phòng máy, khu vực thực hành và hệ thống thiết bị của Game Lab qua 7 góc nhìn toàn cảnh 360°.</p>
+            <div class="meta"><span>7 điểm xem</span><span>13 hotspot</span></div>
+            <div class="actions">
+              <button id="closeGameCard" class="secondary" type="button">Đóng</button>
+              <a class="primary" href="labs/game/tour.html">Bắt đầu tham quan</a>
+            </div>
+          </div>
+        </article>
+      </div>
     </main>
 
     <script>
@@ -278,6 +306,7 @@
       const canvas = document.querySelector("#mapCanvas");
       const backdrop = document.querySelector("#placeBackdrop");
       const fptBackdrop = document.querySelector("#fptBackdrop");
+      const gameBackdrop = document.querySelector("#gameBackdrop");
       const directory = document.querySelector("#placeDirectory");
       const directoryToggle = document.querySelector("#directoryToggle");
       const directorySearch = document.querySelector("#directorySearch");
@@ -354,15 +383,19 @@
 
       document.querySelector("#cieHotspot").addEventListener("click", () => backdrop.classList.add("open"));
       document.querySelector("#fptHotspot").addEventListener("click", () => fptBackdrop.classList.add("open"));
+      document.querySelector("#gameHotspot").addEventListener("click", () => gameBackdrop.classList.add("open"));
       document.querySelector("#closeCard").addEventListener("click", () => backdrop.classList.remove("open"));
       document.querySelector("#closeFptCard").addEventListener("click", () => fptBackdrop.classList.remove("open"));
+      document.querySelector("#closeGameCard").addEventListener("click", () => gameBackdrop.classList.remove("open"));
       backdrop.addEventListener("click", (event) => { if (event.target === backdrop) backdrop.classList.remove("open"); });
       fptBackdrop.addEventListener("click", (event) => { if (event.target === fptBackdrop) fptBackdrop.classList.remove("open"); });
+      gameBackdrop.addEventListener("click", (event) => { if (event.target === gameBackdrop) gameBackdrop.classList.remove("open"); });
       document.addEventListener("keydown", (event) => {
         if (event.key === "Escape") {
           setDirectory(false);
           backdrop.classList.remove("open");
           fptBackdrop.classList.remove("open");
+          gameBackdrop.classList.remove("open");
         }
       });
     </script>
