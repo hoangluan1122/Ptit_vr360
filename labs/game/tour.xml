@@ -136,7 +136,6 @@
 		<hotspot name="spot2067818374" style="skin_hotspotstyle" ath="175.722" atv="37.579" depth="1000.0" linkedscene="scene_game_1l" linkedscene_spot="spot2067818206" linkedscene_hoffset="7.7" use3dtransition="true" />
 		<hotspot name="spot2067818468" style="skin_hotspotstyle" ath="87.985" atv="23.941" depth="1000.0" linkedscene="scene_game_4" linkedscene_spot="spot2067818725" linkedscene_hoffset="-83.53" use3dtransition="true" />
 		<hotspot name="spot2067819465" style="skin_hotspotstyle" ath="10.2" atv="29.326" depth="1000.0" linkedscene="scene_game_5" linkedscene_lookat="-1.57,-0.6,120.0" linkedscene_spot="spot2067819867" linkedscene_hoffset="291.96" use3dtransition="true" />
-		<hotspot name="info_game_lab" style="skin_infopoststyle" ath="-42.0" atv="-2.0" tooltip="Thông tin PTIT Game Lab" onclick="js(showGameLabInfo());" />
 
 	</scene>
 

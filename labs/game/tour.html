@@ -35,18 +35,6 @@
       .loading.compact .loading-mark { display:none; }
       .loading.compact .loading-title { margin-bottom:10px; font-size:11px; }
       .loading.compact .loading-percent { margin-top:7px; font-size:10px; }
-      .info-backdrop { position:fixed; z-index:80; inset:0; display:grid; place-items:center; padding:20px; background:rgba(8,10,14,.56); opacity:0; visibility:hidden; backdrop-filter:blur(10px); transition:opacity .2s,visibility .2s; }
-      .info-backdrop.open { opacity:1; visibility:visible; }
-      .info-card { position:relative; width:min(590px,100%); max-height:calc(100dvh - 40px); overflow:auto; border:1px solid rgba(255,255,255,.16); border-radius:22px; background:linear-gradient(145deg,#fff,#f4f5f7); color:#17191f; box-shadow:0 28px 90px rgba(0,0,0,.36); transform:translateY(12px) scale(.98); transition:transform .22s ease; }
-      .info-backdrop.open .info-card { transform:none; }
-      .info-image { display:block; width:100%; aspect-ratio:16/9; object-fit:cover; background:#e5e7ea; }
-      .info-body { padding:27px; }
-      .info-kicker { margin:0 0 8px; color:#c8161d; font-size:10px; font-weight:800; letter-spacing:.14em; text-transform:uppercase; }
-      .info-card h1 { margin:0 44px 12px 0; font-size:27px; line-height:1.12; letter-spacing:-.035em; }
-      .info-card p { margin:0; color:#626a75; font-size:13px; line-height:1.7; }
-      .info-tags { display:flex; flex-wrap:wrap; gap:7px; margin-top:20px; }
-      .info-tags span { padding:7px 9px; border-radius:8px; background:#e9eaed; color:#555d68; font-size:10px; font-weight:700; }
-      .info-close { position:absolute; top:18px; right:18px; display:grid; place-items:center; width:36px; height:36px; padding:0; border:0; border-radius:10px; background:#e9eaed; color:#454b54; font-size:20px; cursor:pointer; }
       @media(max-width:620px){ .topbar{top:10px;right:10px;left:10px;height:58px}.logo{width:42px;height:42px}.brand span{display:none}.map-back span{display:none}.map-back{width:42px;padding:0;justify-content:center}.scene-status{max-width:130px;padding:9px 10px} }
     </style>
   </head>
@@ -78,31 +66,11 @@
       <button class="tour-tool" data-tour-action="vr" type="button" aria-label="Chế độ VR"><svg viewBox="0 0 24 24"><path d="M3 8.5h18v8H16l-2.2-3h-3.6L8 16.5H3z"/><circle cx="7" cy="12" r="1"/><circle cx="17" cy="12" r="1"/></svg></button>
       <button class="tour-tool" data-tour-action="fullscreen" type="button" aria-label="Toàn màn hình"><svg viewBox="0 0 24 24"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5"/></svg></button>
     </nav>
-    <div id="gameInfo" class="info-backdrop" role="dialog" aria-modal="true" aria-labelledby="gameInfoTitle">
-      <article class="info-card">
-        <img class="info-image" src="panos/Game_4.tiles/preview.jpg" alt="Không gian máy tính tại Game Lab" loading="lazy" decoding="async" />
-        <div class="info-body">
-          <button id="gameInfoClose" class="info-close" type="button" aria-label="Đóng">×</button>
-          <p class="info-kicker">Không gian thực hành</p>
-          <h1 id="gameInfoTitle">PTIT Game Lab</h1>
-          <p>Không gian được bố trí theo mô hình phòng máy, phục vụ học tập, thực hành và phát triển các sản phẩm liên quan đến trò chơi số. Các góc quan sát giúp người xem khám phá khu vực máy tính, bàn giảng và cách tổ chức phòng lab.</p>
-          <div class="info-tags"><span>Game Lab</span><span>Máy tính</span><span>Thực hành</span></div>
-        </div>
-      </article>
-    </div>
     <script src="../../assets/tour-loading.js?v=1"></script>
     <script src="tour.js"></script>
     <script>
       const names={scene_game_0l:"Hành lang trước Game Lab",scene_game_1l:"Lối vào Game Lab",scene_game_2:"Khu máy tính · Góc trái",scene_game_3:"Không gian trung tâm",scene_game_4:"Khu máy tính · Góc phải",scene_game_5:"Khu thực hành phía trong",scene_game_6:"Cuối phòng Game Lab"};
       let lastScene="";
-      const gameInfo=document.querySelector("#gameInfo");
-      function showGameLabInfo(){window.dispatchEvent(new CustomEvent("ptit:stop-guided-narration"));gameInfo.classList.add("open");}
-      function closeGameLabInfo(){gameInfo.classList.remove("open");}
-      window.showGameLabInfo=showGameLabInfo;
-      window.addEventListener("ptit:stop-infopost-narration",closeGameLabInfo);
-      document.querySelector("#gameInfoClose").addEventListener("click",closeGameLabInfo);
-      gameInfo.addEventListener("click",event=>{if(event.target===gameInfo)closeGameLabInfo();});
-      document.addEventListener("keydown",event=>{if(event.key==="Escape")closeGameLabInfo();});
       embedpano({xml:"tour.xml",target:"pano",html5:"only",passQueryParameters:"startscene,startlookat",onready(instance){
         window.ptitKrpano=instance;
         window.ptitAttachTourLoader?.(instance);
