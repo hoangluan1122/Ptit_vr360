@@ -879,7 +879,7 @@ body.mini-game-active .app-sidebar {
     padding: 2px 5px;
     color: #fff;
     background: transparent;
-    font-size: clamp(14px, 1.05vw, 17px);
+    font-size: clamp(12px, 1.05vw, 15px);
     font-weight: 500;
     line-height: 1.15;
     text-align: center;

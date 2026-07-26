@@ -2,7 +2,7 @@
 
 	<include url="skin/vtourskin.xml?v=6" />
 	<!-- Đồng bộ scene CIE mới, sử dụng trực tiếp ảnh tại /labs/cie/. -->
-	<include url="cie-scenes.xml?v=2" />
+	<include url="cie-scenes.xml?v=3" />
 	<style name="skin_infopoststyle"
 	       visible="false" enabled="false"
 	       url="/labs/cie/skin/infopost.svg"
@@ -234,41 +234,13 @@
 			<cube url="panos/5.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,1792" />
 		</image>
 
-		<!-- Info Hotspot for Web UI -->
-		
-
-		
-		<hotspot name="spot1955790715" style="skin_hotspotstyle" ath="177.01" atv="11.251" depth="1000.0" linkedscene="scene_6" linkedscene_lookat="188.68,-3.52,116.56" linkedscene_spot="spot1955791052" linkedscene_hoffset="5.05" use3dtransition="true" />
+		<!-- Info Hotspot for Web UI -->	
+		<hotspot name="spot1955790715" style="skin_hotspotstyle" ath="177.01" atv="11.251" depth="1000.0" linkedscene="scene_7" linkedscene_lookat="188.68,-3.52,116.56" linkedscene_spot="spot1955791052" linkedscene_hoffset="5.05" use3dtransition="true" />
 		<hotspot name="spot1955793291" style="skin_hotspotstyle" ath="-89.711" atv="11.394" depth="1000.0" linkedscene="scene_15" linkedscene_lookat="87.32,10.28,120.0" linkedscene_spot="spot1955793110" linkedscene_hoffset="363.07" use3dtransition="true" />
 		
 		<hotspot name="spot1958161240" style="skin_hotspotstyle" ath="87.975" atv="13.858" depth="1000.0" linkedscene="scene_gpbk2217_1773131018070" linkedscene_spot="spot1958161616" linkedscene_hoffset="271.92" use3dtransition="true" />
 		<hotspot name="spot1958448582" style="skin_hotspotstyle" ath="3.283" atv="14.302" depth="1000.0" linkedscene="scene_4" linkedscene_spot="spot1958448490" linkedscene_hoffset="0.0" use3dtransition="true" />
 		
-
-	</scene>
-
-	<scene name="scene_6" title="6" onstart="" thumburl="panos/6.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
-		
-		<control bouncinglimits="calc:image.cube ? true : false" />
-
-		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
-
-		<preview url="panos/6.tiles/preview.jpg" />
-
-		<image>
-			<cube url="panos/6.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,1792" />
-		</image>
-
-		<hotspot name="spot1955791052" style="skin_hotspotstyle" ath="2.062" atv="12.79" depth="1000.0" linkedscene="scene_5" linkedscene_lookat="188.68,-3.52,116.56" linkedscene_spot="spot1955790715" linkedscene_hoffset="354.95" use3dtransition="true" />
-		<hotspot name="spot1955791073" style="skin_hotspotstyle" ath="176.684" atv="16.337" depth="1000.0" linkedscene="scene_7" linkedscene_lookat="184.68,-7.62,120.0" linkedscene_spot="spot1955791193" linkedscene_hoffset="360.0" use3dtransition="true" />
-		<hotspot name="entrance_cie_from_scene6"
-		         style="skin_hotspotstyle"
-		         ath="121.0" atv="15.0"
-		         depth="1000.0"
-		         linkedscene="scene_cie_cuatruoc"
-		         linkedscene_lookat="0.0,0.0,100.0"
-		         use3dtransition="true"
-		         tooltip="Đi vào Trung tâm CIE" />
 
 	</scene>
 
@@ -284,7 +256,7 @@
 			<cube url="panos/7.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,1024,1792" />
 		</image>
 
-		<hotspot name="spot1955791193" style="skin_hotspotstyle" ath="356.684" atv="16.337" depth="1000.0" linkedscene="scene_6" linkedscene_lookat="184.68,-7.62,120.0" linkedscene_spot="spot1955791073" linkedscene_hoffset="0.0" use3dtransition="true" />
+		<hotspot name="spot1955791193" style="skin_hotspotstyle" ath="356.684" atv="16.337" depth="1000.0" linkedscene="scene_5" linkedscene_lookat="184.68,-7.62,120.0" linkedscene_spot="spot1955791073" linkedscene_hoffset="0.0" use3dtransition="true" />
 		<hotspot name="spot1955791232" style="skin_hotspotstyle" ath="171.738" atv="10.617" depth="1000.0" linkedscene="scene_8" linkedscene_lookat="186.12,-2.41,120.0" linkedscene_spot="spot1955791403" linkedscene_hoffset="12.9" use3dtransition="true" />
 		<hotspot name="spot1955818317" style="skin_hotspotstyle" ath="91.246" atv="9.51" depth="1000.0" linkedscene="scene_gpbk2222_1773131201563" linkedscene_spot="spot1955817862" linkedscene_hoffset="267.94" use3dtransition="true" />
 		<hotspot name="info_scene7_a1"
@@ -1010,7 +982,7 @@
 		</image>
 
 		<hotspot name="spot1955816296" style="skin_hotspotstyle" ath="-154.82" atv="7.927" depth="1000.0" linkedscene="scene_gpbk2252_1773200546003" linkedscene_spot="spot1955816046" linkedscene_hoffset="509.93" use3dtransition="true" />
-			<hotspot name="spot1955816383" style="skin_hotspotstyle" ath="-179.832" atv="-4.931" depth="1000.0" linkedscene="scene_cie_cuatruoc" linkedscene_lookat="0.0,0.0,100.0" linkedscene_hoffset="360.0" use3dtransition="true" tooltip="Đi vào Trung tâm CIE" />
+		<hotspot name="spot1955816383" style="skin_hotspotstyle" ath="-179.832" atv="-4.931" depth="1000.0" linkedscene="scene_cie_cuatruoc" linkedscene_lookat="0.0,0.0,100.0" linkedscene_hoffset="360.0" use3dtransition="true" tooltip="Đi vào Trung tâm CIE" />
 		<hotspot name="spot1955817620" style="skin_hotspotstyle" ath="-114.934" atv="10.737" depth="1000.0" linkedscene="scene_gpbk2221_1773131188097" linkedscene_spot="spot1955817758" linkedscene_hoffset="294.64" use3dtransition="true" />
 		<hotspot name="spot1958162282" style="skin_hotspotstyle" ath="2.285" atv="16.874" depth="1000.0" linkedscene="scene_gpbk2219_1773131109033" linkedscene_spot="spot1958162217" linkedscene_hoffset="356.84" use3dtransition="true" />
 

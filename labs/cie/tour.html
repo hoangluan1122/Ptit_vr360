@@ -338,7 +338,55 @@
           document.querySelector("#narrationBadge").classList.remove("visible");
         });
       }
+      // ==== Info point dùng chung cho các scene Cie ====
+const cieInfoPoints = {
+  sanhchinh1_1: {
+    title: "Bộ phận phát triển dự án", // viết nội dung inforport vào đây
+    text: "Bộ phận Phát triển dự án là đầu mối kết nối, xây dựng và mở rộng các chương trình hợp tác giáo dục quốc tế của Trung tâm CIE, chịu trách nhiệm nghiên cứu các dự án liên kết đào tạo, trao đổi sinh viên và phát triển mạng lưới đối tác với các trường đại học, tổ chức uy tín trên toàn thế giới. ",  // viết nội dung inforport vào đây
+    image: "", // optional, để trống nếu không có ảnh
+    audio: ""  // optional, để trống nếu không có audio
+  },
+  sanhchinh3_1: {
+    title: "Bộ phận quản lý đào tạo", // viết nội dung inforport vào đây
+    text: "Bộ phận quản lý đào tạo chịu trách nhiệm tổ chức, vận hành và quản lý chất lượng các chương trình đào tạo liên kết quốc tế, bao gồm việc xây dựng thời khóa biểu, theo dõi tiến độ học tập, quy đổi tín chỉ và hỗ trợ giải đáp mọi thắc mắc về lộ trình học tập của sinh viên. ",  // viết nội dung inforport vào đây
+    image: "",
+    audio: ""
+  },
+  sanhchinh4_1: {
+    title: "Bộ phận quản lý lưu học sinh", // viết nội dung inforport vào đây
+    text: "Bộ phận quản lý lưu học sinh là đơn vị hỗ trợ toàn diện cho sinh viên quốc tế tại PTIT cũng như sinh viên Việt Nam tham gia các chương trình trao đổi, từ việc giải quyết các thủ tục hành chính, visa, lưu trú cho đến đồng hành trong đời sống và các hoạt động hòa nhập văn hóa. ",  // viết nội dung inforport vào đây
+    image: "",
+    audio: ""
+  },
+  sanhchinh4_2: {
+    title: "Phòng giáo sư thỉnh giảng", // viết nội dung inforport vào đây
+    text: "Phòng giáo sư thỉnh giảng là không gian làm việc, nghiên cứu hiện đại và tiếp đón các giảng viên, chuyên gia quốc tế đến giảng dạy tại CIE, phục vụ công tác trao đổi chuyên môn, thảo luận nghiên cứu chuyên sâu nhằm mang lại nguồn tri thức toàn cầu cho Học viện. ",  // viết nội dung inforport vào đây
+    image: "",
+    audio: ""
+  },
+  sanhchinh5_1: {
+    title: "Lãnh đạo trung tâm", // viết nội dung inforport vào đây
+    text: "Lãnh đạo trung tâm là cơ quan điều hành cao nhất của CIE, đảm nhiệm vai trò chỉ đạo, quản lý, giám sát toàn bộ hoạt động đào tạo, đối ngoại, đồng thời hoạch định chiến lược phát triển và đại diện Trung tâm trong việc hợp tác quốc tế",  // viết nội dung inforport vào đây
+    image: "",
+    audio: ""
+  }
+};
 
+function showCieRoomInfo(key) {
+  const data = cieInfoPoints[key];
+  if (!data) return;
+  window.dispatchEvent(new CustomEvent("ptit:stop-scene-narration"));
+  document.querySelector("#infoImage").hidden = !data.image;
+  if (data.image) document.querySelector("#infoImage").src = data.image;
+  document.querySelector("#infoTitle").textContent = data.title;
+  document.querySelector("#infoModal .modal-card p:last-of-type").textContent = data.text;
+  document.querySelector("#infoModal").classList.add("open");
+  if (data.audio && !(window.ptitAudioAllowed && !window.ptitAudioAllowed())) {
+    document.querySelector("#narrationBadge").classList.add("visible");
+  }
+}
+// Expose the callback explicitly because krpano invokes it from its own JS scope.
+window.showCieRoomInfo = showCieRoomInfo;
       studentNarration.addEventListener("ended", () => {
         window.dispatchEvent(new CustomEvent("ptit:narrationend"));
         document.querySelector("#narrationBadge").classList.remove("visible");
@@ -353,7 +401,7 @@
       }
 
       embedpano({
-        xml: "tour.xml?v=5",
+        xml: "tour.xml?v=7",
         target: "pano",
         html5: "only",
         mobilescale: 1,
@@ -444,7 +492,7 @@
         ]
       };
     </script>
-    <script src="scene-narration-config.js?v=3"></script>
+    <script src="scene-narration-config.js?v=4"></script>
     <script src="../../assets/scene-narration.js?v=4"></script>
   </body>
 </html>

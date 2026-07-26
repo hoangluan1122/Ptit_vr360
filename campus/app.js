@@ -50,15 +50,11 @@ const sceneData = {
 const sceneGroups = [
   {
     "title": "Cổng trường",
-    "scenes": [
-      "scene_1"
-    ]
+    "scenes": ["scene_1"]
   },
   {
     "title": "Tòa A1",
-    "scenes": [
-      "scene_gpbk2218_1773131077123"
-    ]
+    "scenes": ["scene_gpbk2218_1773131077123"]
   },
   {
     "title": "Phòng học A1",
@@ -252,6 +248,56 @@ const computerHotspot = {
 // Centralized hotspot config (scale-friendly for many hotspots).
 const hotspotData = {
     scene_1: [],
+    scene_cie_sanhchinh1h: [
+        {
+            id: 'sanhchinh1_1',
+            // Cửa Bộ phận Phát triển dự án, ngay dưới bảng xanh.
+            ath: -119.0,
+            atv: 12.0,
+            title: 'Bộ phận phát triển dự án',
+            text: 'Bộ phận Phát triển dự án là đầu mối kết nối, xây dựng và mở rộng các chương trình hợp tác giáo dục quốc tế của Trung tâm CIE, chịu trách nhiệm nghiên cứu các dự án liên kết đào tạo, trao đổi sinh viên và phát triển mạng lưới đối tác với các trường đại học, tổ chức uy tín trên toàn thế giới.',
+            tooltip: 'Xem thông tin'
+        }
+    ],
+    scene_cie_sanhchinh3f: [
+        {
+            id: 'sanhchinh3_1',
+            // Căn giữa cánh cửa, ngay dưới bảng xanh.
+            ath: -8.0,
+            atv: 10.0,
+            title: 'Bộ phận quản lý đào tạo',
+            text: 'Bộ phận quản lý đào tạo chịu trách nhiệm tổ chức, vận hành và quản lý chất lượng các chương trình đào tạo liên kết quốc tế, bao gồm việc xây dựng thời khóa biểu, theo dõi tiến độ học tập, quy đổi tín chỉ và hỗ trợ giải đáp mọi thắc mắc về lộ trình học tập của sinh viên.',
+            tooltip: 'Xem thông tin'
+        }
+    ],
+    scene_cie_sanhchinh4f: [
+        {
+            id: 'sanhchinh4_1',
+            ath: 66.0,
+            atv: 10.0,
+            title: 'Bộ phận quản lý lưu học sinh',
+            text: 'Bộ phận quản lý lưu học sinh là đơn vị hỗ trợ toàn diện cho sinh viên quốc tế tại PTIT cũng như sinh viên Việt Nam tham gia các chương trình trao đổi, từ việc giải quyết các thủ tục hành chính, visa, lưu trú cho đến đồng hành trong đời sống và các hoạt động hòa nhập văn hóa.',
+            tooltip: 'Xem thông tin'
+        },
+        {
+            id: 'sanhchinh4_2',
+            ath: 146.0,
+            atv: 10.0,
+            title: 'Phòng giáo sư thỉnh giảng',
+            text: 'Phòng giáo sư thỉnh giảng là không gian làm việc, nghiên cứu hiện đại và tiếp đón các giảng viên, chuyên gia quốc tế đến giảng dạy tại CIE, phục vụ công tác trao đổi chuyên môn, thảo luận nghiên cứu chuyên sâu nhằm mang lại nguồn tri thức toàn cầu cho Học viện.',
+            tooltip: 'Xem thông tin'
+        }
+    ],
+    scene_cie_sanhchinh5: [
+        {
+            id: 'sanhchinh5_1',
+            ath: 57.0,
+            atv: 10.0,
+            title: 'Lãnh đạo trung tâm',
+            text: 'Lãnh đạo trung tâm là cơ quan điều hành cao nhất của CIE, đảm nhiệm vai trò chỉ đạo, quản lý, giám sát toàn bộ hoạt động đào tạo, đối ngoại, đồng thời hoạch định chiến lược phát triển và đại diện Trung tâm trong việc hợp tác quốc tế.',
+            tooltip: 'Xem thông tin'
+        }
+    ],
     scene_gpbk2203_1773130660359: [bookshelfHotspot],
     scene_gpbk2204_1773130697446: [bookshelfHotspot],
     scene_gpbk2205_1773130740283: [computerHotspot],
@@ -541,7 +587,12 @@ function buildAndRenderSingleInfoHotspot(sceneName, item) {
         activeDynamicHotspots.push(hotspotName);
     }
     krpano.call(`addhotspot(${hotspotName});`);
-    krpano.call(`hotspot[${hotspotName}].loadstyle(skin_info_hotspot);`);
+    const hotspotStyle = sceneName.startsWith('scene_cie_')
+        ? 'skin_infopoststyle'
+        : 'skin_info_hotspot';
+    krpano.call(`hotspot[${hotspotName}].loadstyle(${hotspotStyle});`);
+    krpano.call(`set(hotspot[${hotspotName}].visible, true);`);
+    krpano.call(`set(hotspot[${hotspotName}].enabled, true);`);
     krpano.call(`set(hotspot[${hotspotName}].scale, 0.3);`);
     krpano.call(`set(hotspot[${hotspotName}].edge, center);`);
     krpano.call(`set(hotspot[${hotspotName}].distorted, false);`);
@@ -885,7 +936,8 @@ function renderSceneHotspots(sceneName) {
     if (!krpano) return;
     clearSceneHotspots();
     removeAllInfoHotspotsInScene();
-    if (!CAMPUS_INFO_HOTSPOTS_ENABLED) return;
+    const isCieScene = sceneName.startsWith('scene_cie_');
+    if (!CAMPUS_INFO_HOTSPOTS_ENABLED && !isCieScene) return;
 
     const sceneHotspots = hotspotData[sceneName] || [];
     console.log(`[Hotspot Diagnostic] scene=${sceneName}, dataCount=${sceneHotspots.length}, isGarden=${sceneName.includes('2201')}`);
@@ -935,7 +987,7 @@ function onready(krpano_interface) {
     enforceStableNavigationHotspotTextures();
     disableNativeTitleTooltips();
     initSidebar();
-    initEdgeSceneNavigation();
+    //initEdgeSceneNavigation();
     updateSceneGroupEditorSceneList();
     const initialScene = krpano.get('xml.scene');
     if (initialScene) {
@@ -1755,15 +1807,41 @@ function formatEdgeSceneTitle(sceneName) {
 
 let persistentHotspotLabels = [];
 let persistentHotspotLabelTimer = 0;
+let persistentHotspotLabelsRenderDelay = 0;
 
-function getNavigationHotspotLabel(index) {
-    const linkedScene = krpano.get(`hotspot[${index}].linkedscene`) || '';
-    if (!linkedScene) return '';
-    const destination = formatEdgeSceneTitle(linkedScene).replace(/^CIE\s*-\s*/i, '');
-    const naturalDestination = destination
-        ? destination.charAt(0).toLocaleLowerCase('vi-VN') + destination.slice(1)
-        : destination;
-    return `Hướng sang ${naturalDestination}`;
+const hotspotLabelMap = {
+    'spot1955789621': 'Lối vào cổng chính',
+    'spot1955790331': 'Lối ra cổng chính',
+    'spot1958162037': 'Lối vào tòa A1',
+    'spot1955816296': 'Lối ra',
+    'spot1955816383': 'Hướng vào Cie',
+    'spot1955817620': 'Hướng vào Naver',
+    'spot1955790715': 'Hướng ra tòa A2',
+    'spot1955818317': 'Lối vào tòa A1',
+    'spot1955795935': 'Hướng ra kí túc xá',
+    'spot1955791467': 'Hướng ra tòa A2',
+    'spot1955814281': 'Lối vào tòa A2',
+    'spot1955791907': 'Hướng ra thư viện',
+    'spot2064647047': 'Lối vào khu vực phòng học',
+    'spot2064668574': 'Phòng 503',
+    'spot2064727680': 'Phòng 504',
+    'spot2064662582': 'Phòng 505',
+    'spot2064670297': 'Phòng 503',
+    'spot2064729964': 'Phòng 504',
+    'spot2064730512': 'Phòng 502',
+    'spot2064657073': 'Phòng 506',
+    'spot2064653483': 'Phòng 506',
+    'spot2064654222': 'Phòng 501',
+    'spot2064652296': 'Lối ra cửa sau',
+    'spot2064652725': 'Lối vào khu vực phòng học',
+    'spot2064644334': 'Lối vào sảnh chính Cie',
+    'spot1958161240': 'Hướng ra tòa A1'
+    // thêm dòng mới cho mỗi hotspot bạn muốn đặt tên
+};
+
+function getNavigationHotspotLabel(hotspotName) {
+    if (!hotspotName) return '';
+    return hotspotLabelMap[hotspotName] || '';
 }
 
 function disableLegacyNavigationTooltip() {
@@ -1785,19 +1863,51 @@ function positionPersistentHotspotLabels() {
     const height = pano ? pano.clientHeight : 0;
 
     persistentHotspotLabels.forEach((item, index) => {
-        const ath = Number(krpano.get(`hotspot[${item.hotspotIndex}].ath`));
-        const atv = Number(krpano.get(`hotspot[${item.hotspotIndex}].atv`));
+        // Luôn tra cứu theo TÊN hotspot (không dùng index mảng)
+        const stillExists = krpano.get(`hotspot[${item.hotspotName}].name`);
+        if (!stillExists) {
+            item.element.hidden = true;
+            return;
+        }
+
+        const ath = Number(krpano.get(`hotspot[${item.hotspotName}].ath`));
+        const atv = Number(krpano.get(`hotspot[${item.hotspotName}].atv`));
         if (!Number.isFinite(ath) || !Number.isFinite(atv)) {
             item.element.hidden = true;
             return;
         }
+
+        // Điểm gốc
         krpano.call(`spheretoscreen(${ath},${atv},ptit_hs_label_x_${index},ptit_hs_label_y_${index});`);
         const x = Number(krpano.get(`ptit_hs_label_x_${index}`));
         const y = Number(krpano.get(`ptit_hs_label_y_${index}`));
+
+        // Điểm phụ lệch sang phải 5 độ theo ath, cùng atv, để tính hướng "ngang" của mặt phẳng tại đó
+        const athRight = ath + 5;
+        krpano.call(`spheretoscreen(${athRight},${atv},ptit_hs_label_rx_${index},ptit_hs_label_ry_${index});`);
+        const rx = Number(krpano.get(`ptit_hs_label_rx_${index}`));
+        const ry = Number(krpano.get(`ptit_hs_label_ry_${index}`));
+
         const visible = Number.isFinite(x) && Number.isFinite(y) && x > -100 && y > -60 && x < width + 100 && y < height + 80;
         item.element.hidden = !visible;
-        if (visible) item.element.style.transform = `translate3d(${x}px, ${y - 78}px, 0) translateX(-50%)`;
+        if (!visible) return;
+
+        let angleDeg = 0;
+        if (Number.isFinite(rx) && Number.isFinite(ry)) {
+            const dx = rx - x;
+            const dy = ry - y;
+            angleDeg = Math.atan2(dy, dx) * (180 / Math.PI);
+        }
+
+        const offsetY = item.labelOffsetY || 36;
+        item.element.style.transform =
+            `translate3d(${x}px, ${y - offsetY}px, 0) translateX(-50%) rotate(${angleDeg}deg)`;
     });
+}
+
+function hotspotLabelLoop() {
+    positionPersistentHotspotLabels();
+    persistentHotspotLabelTimer = window.requestAnimationFrame(hotspotLabelLoop);
 }
 
 function renderPersistentHotspotLabels() {
@@ -1816,20 +1926,33 @@ function renderPersistentHotspotLabels() {
 
     const total = Number(krpano.get('hotspot.count')) || 0;
     for (let i = 0; i < total; i += 1) {
-        const style = krpano.get(`hotspot[${i}].style`) || '';
-        const linkedScene = krpano.get(`hotspot[${i}].linkedscene`) || '';
+        const hotspotName = krpano.get(`hotspot[${i}].name`) || '';
+        if (!hotspotName) continue;
+        // Dùng lại tên để tra cứu style/linkedscene, tránh phụ thuộc vào index i
+        const style = krpano.get(`hotspot[${hotspotName}].style`) || '';
+        const linkedScene = krpano.get(`hotspot[${hotspotName}].linkedscene`) || '';
         if (!linkedScene || !style.split('|').includes('skin_hotspotstyle')) continue;
-        const label = getNavigationHotspotLabel(i);
+        const label = getNavigationHotspotLabel(hotspotName);
         if (!label) continue;
         const element = document.createElement('span');
         element.className = 'persistent-hotspot-label';
         element.textContent = label;
         overlay.appendChild(element);
-        persistentHotspotLabels.push({ hotspotIndex: i, element });
+
+        // Đo số dòng thực tế để quyết định offset lên trên hotspot
+        const cs = getComputedStyle(element);
+        const lineHeightPx = parseFloat(cs.lineHeight) || 16;
+        const contentHeight = element.offsetHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
+        const lineCount = Math.max(1, Math.round(contentHeight / lineHeightPx));
+        const labelOffsetY = lineCount >= 2 ? 50 : 36;
+
+        persistentHotspotLabels.push({ hotspotName, element, labelOffsetY });
     }
     positionPersistentHotspotLabels();
-    window.clearInterval(persistentHotspotLabelTimer);
-    persistentHotspotLabelTimer = window.setInterval(positionPersistentHotspotLabels, 80);
+
+    // Chỉ có duy nhất MỘT vòng lặp rAF đang chạy tại mọi thời điểm.
+    window.cancelAnimationFrame(persistentHotspotLabelTimer);
+    persistentHotspotLabelTimer = window.requestAnimationFrame(hotspotLabelLoop);
 }
 
 function updateEdgeSceneNavigation(sceneName) {
@@ -1891,13 +2014,17 @@ function initEdgeSceneNavigation() {
 function handleSceneChange(sceneName) {
     console.log("Active Scene:", sceneName);
     currentSceneName = sceneName;
+    const oldOverlay = document.getElementById('persistent-hotspot-labels');
+    if (oldOverlay) oldOverlay.replaceChildren();
+    persistentHotspotLabels = [];
     updateEdgeSceneNavigation(sceneName);
     closeHotspotInfo();
     closeInfo();
     removeLegacyInfoSpot();
     renderSceneHotspots(sceneName);
     enforceStableNavigationHotspotTextures();
-    window.setTimeout(renderPersistentHotspotLabels, 120);
+    window.clearTimeout(persistentHotspotLabelsRenderDelay);
+    persistentHotspotLabelsRenderDelay = window.setTimeout(renderPersistentHotspotLabels, 120);
 
     // Update Sidebar highlighting
     document.querySelectorAll('.scene-item').forEach(el => el.classList.remove('active'));

@@ -14,7 +14,7 @@
 		html { height:100%; }
 		body { height:100%; overflow:hidden; margin:0; padding:0; font-family:Arial, Helvetica, sans-serif; font-size:16px; color:#FFFFFF; background-color:#000000; }
 	</style>
-	<link rel="stylesheet" href="style.css?v=39" />
+	<link rel="stylesheet" href="style.css?v=40" />
 	<link rel="stylesheet" href="../assets/campus-minimap.css?v=2" />
 	<link rel="stylesheet" href="../assets/campus-lab-integration.css?v=1" />
 	<link rel="stylesheet" href="../assets/scene-narration.css?v=1" />
@@ -66,7 +66,7 @@
         <div id="pano">
             <noscript><table style="width:100%;height:100%;"><tr style="vertical-align:middle;text-align:center;"><td>ERROR:<br><br>Javascript not activated<br><br></td></tr></table></noscript>
             <script src="tour.js"></script>
-            <script src="app.js?v=119"></script>
+            <script src="app.js?v=121"></script>
             <script>
                 // Khi mở trực tiếp campus mà không chỉ định scene, luôn bắt đầu ở cổng chính.
                 if (!new URLSearchParams(window.location.search).has("startscene")) {
@@ -75,7 +75,7 @@
                     window.history.replaceState(null, "", campusUrl);
                 }
                 embedpano({
-		xml:"tour.xml?v=28",
+		xml:"tour.xml?v=29",
                     target: "pano",
                     html5: "always",
                     mobilescale: 1.0,
@@ -140,7 +140,7 @@
 
 <script src="../assets/campus-minimap.js?v=2"></script>
 <script src="../assets/campus-lab-integration.js?v=3"></script>
-<script src="../labs/cie/scene-narration-config.js?v=3"></script>
+<script src="../labs/cie/scene-narration-config.js?v=4"></script>
 <script src="../assets/scene-narration.js?v=4"></script>
 
 </body>
